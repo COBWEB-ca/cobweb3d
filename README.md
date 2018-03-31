@@ -1,10 +1,10 @@
 # COBWEB 3D
 COBWEB (Complexity & Organized Behaviour Within Environmental Bounds) is a computer simulation model which can be used for research in a variety of fields such as ecology, health, psychology, economic geography, climate change impacts and ethics.
-This is project is a 3D port of COBWEB 2, with differing feature support.
+This project is a 3D port of COBWEB 2, with differing feature support.
 
 ### Running COBWEB
 * Java is required, you can get it here: https://java.com/download/
-* Get the latest COBWEB jar file: https://github.com/COBWEB-ca/cobweb2/releases
+* Get the latest COBWEB 3D jar file: https://github.com/COBWEB-ca/cobweb3d/releases
 
 ### Setting up the development environment
 * Install Eclipse IDE for Java Developers: http://eclipse.org/downloads/
