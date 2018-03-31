@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<COBWEB2Config config-version="2018-01-01" xmlns="http://cobweb.ca/schema/cobweb2/config">
+    <AgentTypeCount>4</AgentTypeCount>
+    <ControllerName>cobweb3d.impl.ai.SimpleController</ControllerName>
+    <randomSeed>0</randomSeed>
+    <Environment>
+        <Width>10</Width>
+        <Height>10</Height>
+        <Depth>10</Depth>
+        <wrap>true</wrap>
+        <randomStones>0</randomStones>
+    </Environment>
+    <Agents>
+        <AgentParams>
+            <Agent id="1">
+                <Agents>10</Agents>
+                <Color>#FF4081</Color>
+                <InitEnergy>100</InitEnergy>
+                <StepEnergy>1</StepEnergy>
+                <StepAgentEnergy>2</StepAgentEnergy>
+                <agingMode>false</agingMode>
+                <agingLimit>300</agingLimit>
+            </Agent>
+            <Agent id="2">
+                <Agents>10</Agents>
+                <Color>#E040FB</Color>
+                <InitEnergy>100</InitEnergy>
+                <StepEnergy>1</StepEnergy>
+                <StepAgentEnergy>2</StepAgentEnergy>
+                <agingMode>false</agingMode>
+                <agingLimit>300</agingLimit>
+            </Agent>
+            <Agent id="3">
+                <Agents>10</Agents>
+                <Color>#7C4DFF</Color>
+                <InitEnergy>100</InitEnergy>
+                <StepEnergy>1</StepEnergy>
+                <StepAgentEnergy>2</StepAgentEnergy>
+                <agingMode>false</agingMode>
+                <agingLimit>300</agingLimit>
+            </Agent>
+            <Agent id="4">
+                <Agents>10</Agents>
+                <Color>#536DFE</Color>
+                <InitEnergy>100</InitEnergy>
+                <StepEnergy>1</StepEnergy>
+                <StepAgentEnergy>2</StepAgentEnergy>
+                <agingMode>false</agingMode>
+                <agingLimit>300</agingLimit>
+            </Agent>
+        </AgentParams>
+    </Agents>
+    <ControllerConfig class="cobweb3d.impl.ai.SimpleControllerParams">
+        <AgentParams>
+            <Agent id="1"/>
+            <Agent id="2"/>
+            <Agent id="3"/>
+            <Agent id="4"/>
+        </AgentParams>
+    </ControllerConfig>
+    <spawnNewAgents>true</spawnNewAgents>
+    <keepOldAgents>false</keepOldAgents>
+    <Reproduction>
+        <AgentParams>
+            <Agent id="1">
+                <sexualBreedChance>0.0</sexualBreedChance>
+                <asexualBreedChance>0.0</asexualBreedChance>
+                <BreedEnergy>20</BreedEnergy>
+                <sexualPregnancyPeriod>5</sexualPregnancyPeriod>
+                <pregnancyPeriod>0</pregnancyPeriod>
+            </Agent>
+            <Agent id="2">
+                <sexualBreedChance>0.0</sexualBreedChance>
+                <asexualBreedChance>0.0</asexualBreedChance>
+                <BreedEnergy>10</BreedEnergy>
+                <sexualPregnancyPeriod>5</sexualPregnancyPeriod>
+                <pregnancyPeriod>0</pregnancyPeriod>
+            </Agent>
+            <Agent id="3">
+                <sexualBreedChance>0.0</sexualBreedChance>
+                <asexualBreedChance>0.0</asexualBreedChance>
+                <BreedEnergy>30</BreedEnergy>
+                <sexualPregnancyPeriod>5</sexualPregnancyPeriod>
+                <pregnancyPeriod>0</pregnancyPeriod>
+            </Agent>
+            <Agent id="4">
+                <sexualBreedChance>0.0</sexualBreedChance>
+                <asexualBreedChance>0.0</asexualBreedChance>
+                <BreedEnergy>20</BreedEnergy>
+                <sexualPregnancyPeriod>5</sexualPregnancyPeriod>
+                <pregnancyPeriod>0</pregnancyPeriod>
+            </Agent>
+        </AgentParams>
+    </Reproduction>
+    <Consumption>
+        <AgentParams>
+            <Agent id="1">
+                <canEat>
+                    <Agent id="1">false</Agent>
+                    <Agent id="2">false</Agent>
+                    <Agent id="3">false</Agent>
+                    <Agent id="4">true</Agent>
+                </canEat>
+                <energyMultiplier>
+                    <Agent id="1">1.0</Agent>
+                    <Agent id="2">1.0</Agent>
+                    <Agent id="3">1.0</Agent>
+                    <Agent id="4">1.2</Agent>
+                </energyMultiplier>
+            </Agent>
+            <Agent id="2">
+                <canEat>
+                    <Agent id="1">true</Agent>
+                    <Agent id="2">false</Agent>
+                    <Agent id="3">false</Agent>
+                    <Agent id="4">false</Agent>
+                </canEat>
+                <energyMultiplier>
+                    <Agent id="1">1.5</Agent>
+                    <Agent id="2">1.0</Agent>
+                    <Agent id="3">1.0</Agent>
+                    <Agent id="4">1.0</Agent>
+                </energyMultiplier>
+            </Agent>
+            <Agent id="3">
+                <canEat>
+                    <Agent id="1">false</Agent>
+                    <Agent id="2">true</Agent>
+                    <Agent id="3">false</Agent>
+                    <Agent id="4">true</Agent>
+                </canEat>
+                <energyMultiplier>
+                    <Agent id="1">1.0</Agent>
+                    <Agent id="2">2.0</Agent>
+                    <Agent id="3">1.0</Agent>
+                    <Agent id="4">1.0</Agent>
+                </energyMultiplier>
+            </Agent>
+            <Agent id="4">
+                <canEat>
+                    <Agent id="1">false</Agent>
+                    <Agent id="2">false</Agent>
+                    <Agent id="3">true</Agent>
+                    <Agent id="4">false</Agent>
+                </canEat>
+                <energyMultiplier>
+                    <Agent id="1">1.0</Agent>
+                    <Agent id="2">1.0</Agent>
+                    <Agent id="3">0.6</Agent>
+                    <Agent id="4">1.0</Agent>
+                </energyMultiplier>
+            </Agent>
+        </AgentParams>
+    </Consumption>
+    <Exchange>
+        <AgentPairs>
+            <AgentPairs id="1">
+                <type1>1</type1>
+                <type2>1</type2>
+                <quantXTransfer>0.0</quantXTransfer>
+                <quantYTransfer>0.0</quantYTransfer>
+                <dynamicParams>
+                    <enabled>false</enabled>
+                    <lowerBound>0.0</lowerBound>
+                    <upperBound>1.0</upperBound>
+                    <increment>1.0</increment>
+                </dynamicParams>
+            </AgentPairs>
+            <AgentPairs id="2">
+                <type1>1</type1>
+                <type2>2</type2>
+                <quantXTransfer>0.0</quantXTransfer>
+                <quantYTransfer>0.0</quantYTransfer>
+                <dynamicParams>
+                    <enabled>false</enabled>
+                    <lowerBound>0.0</lowerBound>
+                    <upperBound>1.0</upperBound>
+                    <increment>1.0</increment>
+                </dynamicParams>
+            </AgentPairs>
+            <AgentPairs id="3">
+                <type1>2</type1>
+                <type2>2</type2>
+                <quantXTransfer>0.0</quantXTransfer>
+                <quantYTransfer>0.0</quantYTransfer>
+                <dynamicParams>
+                    <enabled>false</enabled>
+                    <lowerBound>0.0</lowerBound>
+                    <upperBound>1.0</upperBound>
+                    <increment>1.0</increment>
+                </dynamicParams>
+            </AgentPairs>
+            <AgentPairs id="4">
+                <type1>1</type1>
+                <type2>3</type2>
+                <quantXTransfer>0.0</quantXTransfer>
+                <quantYTransfer>0.0</quantYTransfer>
+                <dynamicParams>
+                    <enabled>false</enabled>
+                    <lowerBound>0.0</lowerBound>
+                    <upperBound>1.0</upperBound>
+                    <increment>1.0</increment>
+                </dynamicParams>
+            </AgentPairs>
+            <AgentPairs id="5">
+                <type1>2</type1>
+                <type2>3</type2>
+                <quantXTransfer>0.0</quantXTransfer>
+                <quantYTransfer>0.0</quantYTransfer>
+                <dynamicParams>
+                    <enabled>false</enabled>
+                    <lowerBound>0.0</lowerBound>
+                    <upperBound>1.0</upperBound>
+                    <increment>1.0</increment>
+                </dynamicParams>
+            </AgentPairs>
+            <AgentPairs id="6">
+                <type1>3</type1>
+                <type2>3</type2>
+                <quantXTransfer>0.0</quantXTransfer>
+                <quantYTransfer>0.0</quantYTransfer>
+                <dynamicParams>
+                    <enabled>false</enabled>
+                    <lowerBound>0.0</lowerBound>
+                    <upperBound>1.0</upperBound>
+                    <increment>1.0</increment>
+                </dynamicParams>
+            </AgentPairs>
+            <AgentPairs id="7">
+                <type1>1</type1>
+                <type2>4</type2>
+                <quantXTransfer>0.0</quantXTransfer>
+                <quantYTransfer>0.0</quantYTransfer>
+                <dynamicParams>
+                    <enabled>false</enabled>
+                    <lowerBound>0.0</lowerBound>
+                    <upperBound>1.0</upperBound>
+                    <increment>1.0</increment>
+                </dynamicParams>
+            </AgentPairs>
+            <AgentPairs id="8">
+                <type1>2</type1>
+                <type2>4</type2>
+                <quantXTransfer>0.0</quantXTransfer>
+                <quantYTransfer>0.0</quantYTransfer>
+                <dynamicParams>
+                    <enabled>false</enabled>
+                    <lowerBound>0.0</lowerBound>
+                    <upperBound>1.0</upperBound>
+                    <increment>1.0</increment>
+                </dynamicParams>
+            </AgentPairs>
+            <AgentPairs id="9">
+                <type1>3</type1>
+                <type2>4</type2>
+                <quantXTransfer>0.0</quantXTransfer>
+                <quantYTransfer>0.0</quantYTransfer>
+                <dynamicParams>
+                    <enabled>false</enabled>
+                    <lowerBound>0.0</lowerBound>
+                    <upperBound>1.0</upperBound>
+                    <increment>1.0</increment>
+                </dynamicParams>
+            </AgentPairs>
+            <AgentPairs id="10">
+                <type1>4</type1>
+                <type2>4</type2>
+                <quantXTransfer>0.0</quantXTransfer>
+                <quantYTransfer>0.0</quantYTransfer>
+                <dynamicParams>
+                    <enabled>false</enabled>
+                    <lowerBound>0.0</lowerBound>
+                    <upperBound>1.0</upperBound>
+                    <increment>1.0</increment>
+                </dynamicParams>
+            </AgentPairs>
+        </AgentPairs>
+        <AgentParams>
+            <Agent id="1">
+                <initialX>0.0</initialX>
+                <initialY>0.0</initialY>
+                <utilityFunction>
+                    <a>0.5</a>
+                    <b>0.5</b>
+                    <formula>None</formula>
+                </utilityFunction>
+            </Agent>
+            <Agent id="2">
+                <initialX>0.0</initialX>
+                <initialY>0.0</initialY>
+                <utilityFunction>
+                    <a>0.5</a>
+                    <b>0.5</b>
+                    <formula>None</formula>
+                </utilityFunction>
+            </Agent>
+            <Agent id="3">
+                <initialX>0.0</initialX>
+                <initialY>0.0</initialY>
+                <utilityFunction>
+                    <a>0.5</a>
+                    <b>0.5</b>
+                    <formula>None</formula>
+                </utilityFunction>
+            </Agent>
+            <Agent id="4">
+                <initialX>0.0</initialX>
+                <initialY>0.0</initialY>
+                <utilityFunction>
+                    <a>0.5</a>
+                    <b>0.5</b>
+                    <formula>None</formula>
+                </utilityFunction>
+            </Agent>
+        </AgentParams>
+    </Exchange>
+    <Transformation>
+        <AgentParams>
+            <Agent id="1">
+                <enabled>false</enabled>
+                <transformTo>1</transformTo>
+                <transformationXThreshold>100</transformationXThreshold>
+            </Agent>
+            <Agent id="2">
+                <enabled>false</enabled>
+                <transformTo>1</transformTo>
+                <transformationXThreshold>100</transformationXThreshold>
+            </Agent>
+            <Agent id="3">
+                <enabled>false</enabled>
+                <transformTo>1</transformTo>
+                <transformationXThreshold>100</transformationXThreshold>
+            </Agent>
+            <Agent id="4">
+                <enabled>false</enabled>
+                <transformTo>1</transformTo>
+                <transformationXThreshold>100</transformationXThreshold>
+            </Agent>
+        </AgentParams>
+    </Transformation>
+</COBWEB2Config>

@@ -1,0 +1,133 @@
+/** Kotlin initialization */
+buildscript {
+    ext.kotlin_version = '1.1.1'
+    repositories {
+        jcenter()
+        mavenCentral() //maven { url 'http://dl.bintray.com/kotlin/kotlin-eap' }
+    }
+    dependencies {
+        // classpath 'me.tatarka:gradle-retrolambda:3.7.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.2'
+    }
+}
+apply plugin: 'kotlin'
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+/*apply plugin: 'me.tatarka.retrolambda'
+retrolambda {
+    javaVersion JavaVersion.VERSION_1_7
+    //jvmArgs '-arg1', '-arg2'
+    defaultMethods true
+    incremental true
+}*/
+/** Java/Application initialization */
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'java'
+apply plugin: 'application'
+
+/** App Id, Version, Entry point, Java Version */
+group 'ca.cobweb'
+version '0.1.4'
+
+mainClassName = 'cobweb3d.CobwebApplicationRunner'
+//applicationDefaultJvmArgs = ["-Dsun.java2d.opengl=True"]
+applicationDefaultJvmArgs = ["-Dprism.verbose=true", "-Dcom.sun.javafx.experimental.embedded.3d=true"//,
+                             //"-Dprism.order=es2,es1,sw", "-Dprism.vsync=true",
+                             , "-Dprism.forceGPU=true"]
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+    //maven { url 'http://dl.bintray.com/kotlin/kotlin-eap' }
+    // mavenCentral()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    // testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    implementation project(':CobwebUtil')
+    // implementation name: 'material-ui-swing'
+
+    // https://mvnrepository.com/artifact/org.reflections/reflections
+    implementation "org.reflections:reflections:0.9.11"
+
+    implementation "org.jogamp.gluegen:gluegen-rt:${joglVersion}"
+    implementation "org.jogamp.jogl:jogl-all:${joglVersion}"
+
+    // TODO: Check runtime vs runtimeOnly.
+    /*runtimeOnly "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-android-aarch64"
+    runtimeOnly "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-android-armv6"
+    runtimeOnly "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-linux-amd64"
+    runtimeOnly "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-linux-armv6"
+    runtimeOnly "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-linux-armv6hf"
+    runtimeOnly "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-linux-i586"
+    runtimeOnly "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-macosx-universal"
+    runtimeOnly "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-solaris-amd64"
+    runtimeOnly "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-solaris-i586"
+    runtimeOnly "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-windows-amd64"
+    runtimeOnly "org.jogamp.gluegen:gluegen-rt:${joglVersion}:natives-windows-i586"
+
+    runtimeOnly "org.jogamp.jogl:jogl-all:${joglVersion}:natives-android-aarch64"
+    runtimeOnly "org.jogamp.jogl:jogl-all:${joglVersion}:natives-android-armv6"
+    runtimeOnly "org.jogamp.jogl:jogl-all:${joglVersion}:natives-linux-amd64"
+    runtimeOnly "org.jogamp.jogl:jogl-all:${joglVersion}:natives-linux-armv6"
+    runtimeOnly "org.jogamp.jogl:jogl-all:${joglVersion}:natives-linux-armv6hf"
+    runtimeOnly "org.jogamp.jogl:jogl-all:${joglVersion}:natives-linux-i586"
+    runtimeOnly "org.jogamp.jogl:jogl-all:${joglVersion}:natives-macosx-universal"
+    runtimeOnly "org.jogamp.jogl:jogl-all:${joglVersion}:natives-solaris-amd64"
+    runtimeOnly "org.jogamp.jogl:jogl-all:${joglVersion}:natives-solaris-i586"
+    runtimeOnly "org.jogamp.jogl:jogl-all:${joglVersion}:natives-windows-amd64"
+    runtimeOnly "org.jogamp.jogl:jogl-all:${joglVersion}:natives-windows-i586"*/
+
+    // Math Library
+    implementation "org.joml:joml:${jomlVersion}"
+
+    // Java3D FX Library
+    implementation 'org.fxyz3d:fxyz3d:0.1.1'
+
+    // Apache Excel Library
+    implementation 'org.apache.poi:poi-ooxml:3.17'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'cobweb3d.CobwebApplicationRunner'
+    }
+}
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Version': version,
+                'Main-Class': 'cobweb3d.CobwebApplicationRunner'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+shadowJar {
+    baseName = project.name
+    classifier = 'Release'
+    version = version
+    exclude "META-INF/*.SF"
+    exclude "META-INF/*.DSA"
+    exclude "META-INF/*.RSA"
+    exclude "META-INF/LICENSE"
+}

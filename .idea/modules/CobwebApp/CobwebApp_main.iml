@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id=":CobwebApp:main" external.linked.project.path="$MODULE_DIR$/../../../CobwebApp" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="ca.cobweb" external.system.module.type="sourceSet" external.system.module.version="0.1.4" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+    <output url="file://$MODULE_DIR$/../../../CobwebApp/out/production/classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../../CobwebApp/src/main">
+      <sourceFolder url="file://$MODULE_DIR$/../../../CobwebApp/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../CobwebApp/src/main/kotlin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../CobwebApp/src/main/resources" type="java-resource" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.1" level="project" />
+    <orderEntry type="module" module-name="CobwebUtil_main" />
+    <orderEntry type="library" name="Gradle: org.reflections:reflections:0.9.11" level="project" />
+    <orderEntry type="library" name="Gradle: org.jogamp.gluegen:gluegen-rt:2.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jogamp.jogl:jogl-all:2.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.joml:joml:1.9.4" level="project" />
+    <orderEntry type="library" name="Gradle: org.fxyz3d:fxyz3d:0.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.poi:poi-ooxml:3.17" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.guava:guava:20.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.javassist:javassist:3.21.0-GA" level="project" />
+    <orderEntry type="library" name="Gradle: eu.mihosoft.vrl.jcsg:jcsg:0.4.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.orbisgis:poly2tri-core:0.1.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.poi:poi:3.17" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.poi:poi-ooxml-schemas:3.17" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.virtuald:curvesapi:1.04" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: java3d:vecmath:1.3.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-simple:1.6.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.6.1" level="project" />
+    <orderEntry type="library" name="Gradle: commons-codec:commons-codec:1.10" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.commons:commons-collections4:4.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.xmlbeans:xmlbeans:2.6.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
+    <orderEntry type="library" name="Gradle: stax:stax-api:1.0.1" level="project" />
+  </component>
+</module>

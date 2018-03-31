@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="Cobweb3D_main" target="1.8" />
+      <module name="cobweb3d_main" target="1.8" />
+      <module name="cobweb3d_test" target="1.8" />
+      <module name="Cobweb3D_test" target="1.8" />
+      <module name="CobwebApp_main" target="1.8" />
+      <module name="CobwebApp_test" target="1.8" />
+      <module name="CobwebUtil_main" target="1.8" />
+      <module name="CobwebUtil_test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
