@@ -108,4 +108,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Kotlin
+build/kotlin-build
+
 # End of https://www.gitignore.cobwebutil.io/api/java,windows,intellij
