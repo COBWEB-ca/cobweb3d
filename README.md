@@ -7,9 +7,8 @@ This project is a 3D port of COBWEB 2, with differing feature support.
 * Get the latest COBWEB 3D jar file: https://github.com/COBWEB-ca/cobweb3d/releases
 
 ### Setting up the development environment
-* Install Eclipse IDE for Java Developers: http://eclipse.org/downloads/
-* Install EGit: http://www.vogella.com/tutorials/EclipseGit/article.html#eclipseinstallation
-* Configure EGit: http://www.vogella.com/tutorials/EclipseGit/article.html#egitconfiguration (just steps 5.1 and 5.2 should be enough)
-* Clone COBWEB from github: http://www.vogella.com/tutorials/EclipseGit/article.html#clone_repositoy the repository URI is: https://github.com/COBWEB-ca/cobweb2 and the branch is "master"
-* Wait for Eclipse to fetch the dependencies using Maven and build the project
+* Install Git Version Control: https://git-scm.com/downloads
+* Install IntelliJ IDEA for Java Developers and enable the Gradle Plugin during setup: https://www.jetbrains.com/idea/
+* Clone COBWEB 3D from github: http://www.vogella.com/tutorials/EclipseGit/article.html#clone_repositoy the repository URI is: https://github.com/COBWEB-ca/cobweb3d and the branch is "master"
+* Wait for IntellIJ IDEA to fetch the dependencies using Gradle and use the Gradle run task to turn the project.
 * Modify and run the code!
