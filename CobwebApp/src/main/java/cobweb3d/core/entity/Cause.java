@@ -7,7 +7,7 @@ package cobweb3d.core.entity;
  * why an agent dies.
  *
  * Document Author: Zewen Shen
- * Reminder: I'm not the author of this class, so my document may be inaccurate.
+ * Reminder: I'm not the author of this class, so my documentation may be inaccurate.
  */
 public interface Cause {
     String getName();

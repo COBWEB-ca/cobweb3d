@@ -8,7 +8,7 @@ import cobweb3d.core.environment.Topology;
  * and able to generate random number. (It's a little bit confusing for me :( )
  *
  * Document Author: Zewen Shen
- * Reminder: I'm not the author of this class, so my document may be inaccurate.
+ * Reminder: I'm not the author of this class, so my documentation may be inaccurate.
  */
 public interface SimulationTimeSpace extends RandomSource {
     long getTime();

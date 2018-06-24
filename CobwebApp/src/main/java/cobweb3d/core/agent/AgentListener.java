@@ -15,7 +15,7 @@ import cobweb3d.core.location.LocationDirection;
  *  8. An agent updates.
  *
  * Document Author: Zewen Shen
- * Reminder: I'm not the author of this class, so my document may be inaccurate.
+ * Reminder: I'm not the author of this class, so my documentation may be inaccurate.
  */
 public interface AgentListener extends ControllerListener {
 

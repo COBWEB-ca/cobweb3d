@@ -6,7 +6,7 @@ package cobweb3d.core.location;
  * For other references, please read class Direction and Location.
  *
  * Document Author: Zewen Shen
- * Reminder: I'm not the author of this class, so my document may be inaccurate.
+ * Reminder: I'm not the author of this class, so my documentation may be inaccurate.
  */
 public class LocationDirection extends Location {
     public Direction direction;
