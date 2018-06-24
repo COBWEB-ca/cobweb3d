@@ -30,7 +30,6 @@ public abstract class BaseAgent implements Updatable {
     }
 
     public void die() {
-        assert (isAlive());
         if (!isAlive())
             return;
         alive = false;
