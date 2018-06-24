@@ -12,7 +12,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 3D environment.
+ * The 3D environment.
+ *
+ * It uses a hash table to link one location to one agent who stays in that location.
+ *
+ * Document Author: Zewen Shen
+ * Reminder: I'm not the author of this class, so my documentation may be inaccurate.
  */
 public class BaseEnvironment implements Updatable {
     public BaseEnvironmentParams environmentParams;
@@ -25,6 +30,14 @@ public class BaseEnvironment implements Updatable {
      * The implementation uses a hash table to store agents, as we assume there are many more locations than agents.
      */
     protected Map<Location, BaseAgent> agentTable;
+
+    /**
+     * flagArray is a 3d array where each entry represents the current state(?) in that position.
+     * But it is still unused yet (v0.1.4)
+     *
+     * Document Author: Zewen Shen
+     * Reminder: I'm not the author of this class, so my documentation may be inaccurate.
+     */
     protected byte[][][] flagArray; // TODO
 
     public BaseEnvironment(SimulationInternals simulation) {

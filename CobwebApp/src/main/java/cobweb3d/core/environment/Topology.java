@@ -11,6 +11,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * This class is like a manager class of class Direction, Location and LocationDirection.
+ * It encapsulates all kinds of methods which takes Direction, Location and LocationDirection as inputs.
+ * A big problem is that I don't understand what does variable "wrap" mean.
+ *
+ * Document Author: Zewen Shen
+ * Reminder: I'm not the author of this class, so my documentation may be inaccurate.
+ */
 public class Topology {
     public final int width;
     public final int height;
@@ -47,6 +55,17 @@ public class Topology {
                 && l.y >= 0 && l.y < height;
     }
 
+    /**
+     * I'm not sure about what does "wrap" mean. For the case when wrap is false,
+     * the logic is easy to understand.
+     *
+     *
+     * Document Author: Zewen Shen
+     * Reminder: I'm not the author of this class, so my document may be inaccurate.
+     *
+     * @param location The position and direction of the current agent
+     * @return the LocationDirection which is in front of the agent
+     */
     public LocationDirection getAdjacent(LocationDirection location) {
         Direction direction = location.direction;
         int x = location.x + direction.x;
