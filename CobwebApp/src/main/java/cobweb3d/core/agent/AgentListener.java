@@ -3,6 +3,20 @@ package cobweb3d.core.agent;
 import cobweb3d.core.entity.Cause;
 import cobweb3d.core.location.LocationDirection;
 
+/**
+ * A listener class which reacts to
+ *  1. An agent meets another agent.
+ *  2. An agent makes a move.
+ *  3. An baby agent spawns.
+ *  4. An agent dies.
+ *  5. An agent eats some food. (unused in v0.1.4)
+ *  6. An agent hunts another agent.
+ *  7. The energy of one agent is changed. (unused in v0.1.4)
+ *  8. An agent updates.
+ *
+ * Document Author: Zewen Shen
+ * Reminder: I'm not the author of this class, so my document may be inaccurate.
+ */
 public interface AgentListener extends ControllerListener {
 
     void onContact(BaseAgent bumper, BaseAgent bumpee);
