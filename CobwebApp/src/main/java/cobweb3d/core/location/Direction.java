@@ -2,7 +2,13 @@ package cobweb3d.core.location;
 
 import org.joml.Vector3i;
 
-
+/**
+ * This is a subclass of Vector3i, which is a well-written vector class in R^3.
+ * Class Direction uses the orthonormal basis of R^3 to indicate the direction of any agents.
+ *
+ * Document Author: Zewen Shen
+ * Reminder: I'm not the author of this class, so my document may be inaccurate.
+ */
 public class Direction extends Vector3i {
     public static Direction xPos = new Direction(1, 0, 0);
     public static Direction xNeg = new Direction(-1, 0, 0);
