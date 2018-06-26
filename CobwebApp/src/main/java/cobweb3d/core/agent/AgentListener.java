@@ -13,9 +13,6 @@ import cobweb3d.core.location.LocationDirection;
  *  6. An agent hunts another agent.
  *  7. The energy of one agent is changed. (unused in v0.1.4)
  *  8. An agent updates.
- *
- * Document Author: Zewen Shen
- * Reminder: I'm not the author of this class, so my documentation may be inaccurate.
  */
 public interface AgentListener extends ControllerListener {
 
