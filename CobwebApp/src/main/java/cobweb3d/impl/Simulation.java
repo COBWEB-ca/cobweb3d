@@ -63,6 +63,12 @@ public class Simulation implements SimulationInternals, SimulationInterface {
         agent.setId(mNextAgentId++);
     }
 
+    /**
+     * For each type of agents, create "environment.agentPrams[i].initialAgents" (This is a number)
+     * agent of that type at random location of this environment.
+     * If it can't retrieve a random unoccupied location for 100 times, then this agent can't be spawned.
+     * So no agents will be added into the environment once all the locations are occupied.
+     */
     public void loadNewAgents() {
         for (int i = 0; i < environment.agentParams.length; i++) {
             for (int j = 0; j < environment.agentParams[i].initialAgents; j++) {
@@ -88,6 +94,8 @@ public class Simulation implements SimulationInternals, SimulationInterface {
         simulationConfig = simConfig;
         environment.setParams(simConfig.envParams, simConfig.agentParams, simulationConfig.keepOldAgents);
 
+        // This if statement deals with the cases where you load a new simConfig when you have already done
+        // some simulation using cobweb. You can choose to continue with the existing simulation, or restart a new one.
         if (!simConfig.isContinuation()) {
             mAgents.clear();
             mNextAgentId = 0;
@@ -107,6 +115,13 @@ public class Simulation implements SimulationInternals, SimulationInterface {
         return simulationConfig != null ? simulationConfig.getAgentTypes() : 0;
     }
 
+    /**
+     * This method will be executed once every tick, in order to update environment and agents.
+     * mutatorListener will be notified of changes of agents after agents get updated.
+     *
+     * Using "synchronized" to make sure that no other thread can execute the code block inside
+     * "synchronized (ticks)".
+     */
     @Override
     public void step() {
         environment.update();
