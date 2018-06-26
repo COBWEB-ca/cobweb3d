@@ -14,6 +14,11 @@ import cobweb3d.plugins.states.AgentState;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The implementation of BaseAgent.
+ * This class adds methods which interact between agent and the environment,
+ * while the class BaseAgent only deals with itself, such as energy, type of its agent.
+ */
 public class Agent extends BaseAgent {
     public AgentParams params;
     public Map<Class<? extends AgentState>, AgentState> extraState = new HashMap<>();
@@ -67,6 +72,7 @@ public class Agent extends BaseAgent {
     @Override
     public void die() {
         super.die();
+        // Note: This is changeEnergy not setEnergy. That's the reason why it uses Math.min()
         changeEnergy(Math.min(0, -getEnergy()), new DeathCause());
         simulation.getAgentListener().onDeath(this);
         move(null);
@@ -87,6 +93,11 @@ public class Agent extends BaseAgent {
         return child;
     }
 
+    /**
+     * If the agent is too old, let it die.
+     * The other updating work is left to the controller of this agent.
+     * For information relating to the default controller, please refer to the class cobweb3d.impl.ai.SimpleController
+     */
     @Override
     public void update() {
         if (!isAlive()) return;
@@ -155,6 +166,11 @@ public class Agent extends BaseAgent {
         changeEnergy(params.initEnergy.getValue(), new SexualBirthCause());
     }
 
+    /**
+     * Initialize the agent's position
+     *
+     * @param pos the location where the agent stays at and the direction where the agent faces to
+     */
     private void initPosition(LocationDirection pos) {
         if (pos.direction.equals(Direction.NONE))
             pos = new LocationDirection(pos, simulation.getTopology().getRandomDirection());
@@ -162,6 +178,12 @@ public class Agent extends BaseAgent {
         simulation.registerAgent(this);
     }
 
+    /**
+     * First it updates class Environment's hash table, which maps a position to the agent in that position.
+     * Then it updates the position attribute of that agent, and notifies the agentListener.
+     *
+     * @param newPos the new position where the agent will move to
+     */
     public void move(LocationDirection newPos) {
         LocationDirection oldPos = getPosition();
         if (oldPos != null) environment.setAgent(oldPos, null);
@@ -186,6 +208,11 @@ public class Agent extends BaseAgent {
         position = environment.topology.getTurnDownPosition(getPosition());//
     }
 
+    /**
+     * It gets the expected position where the agent will head for in the next step.
+     * Then the agent goes to that position, and reacts differently based on the different states of the position.
+     * (E.g., the position is free, or has other agent/rock/waste)
+     */
     public void step() {
         LocationDirection destPos = environment.topology.getAdjacent(getPosition());
         if (!destPos.equals(getPosition())) {
@@ -199,11 +226,24 @@ public class Agent extends BaseAgent {
         }
     }
 
+    /**
+     * It deals with the case that destPos has no other agents.
+     * In this case, the agent moves to that position and decreases its energy due to its movement.
+     *
+     * @param destPos the destination position where the agent will move to
+     */
     private void onStepFreeTile(LocationDirection destPos) {
         move(destPos);
         changeEnergy(-params.stepEnergy.getValue(), new StepForwardCause());
     }
 
+    /**
+     * It deals with the case that exist other agents at one position.
+     * In this case, the agent may fight with the other agent, and loses more energy.
+     * Or if the other agent is the same type with this agent, they may reproduce a child. (Unimplemented in v0.1.4)
+     *
+     * @param otherAgent
+     */
     private void onStepAgentBump(BaseAgent otherAgent) {
         simulation.getAgentListener().onContact(this, otherAgent);
         changeEnergy(-params.stepAgentEnergy.getValue(), new BumpAgentCause());
