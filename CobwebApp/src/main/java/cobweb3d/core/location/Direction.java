@@ -2,7 +2,9 @@ package cobweb3d.core.location;
 
 import org.joml.Vector3i;
 
-
+/**
+ * This is a subclass of Vector3i, which represents an orthonormal direction in R^3.
+ */
 public class Direction extends Vector3i {
     public static Direction xPos = new Direction(1, 0, 0);
     public static Direction xNeg = new Direction(-1, 0, 0);

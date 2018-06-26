@@ -1,5 +1,10 @@
 package cobweb3d.core.location;
 
+/**
+ * This class combines Location and Direction together, such that it can represent
+ * both one agent's moving direction and current position.
+ * For other references, please read class Direction and Location.
+ */
 public class LocationDirection extends Location {
     public Direction direction;
 

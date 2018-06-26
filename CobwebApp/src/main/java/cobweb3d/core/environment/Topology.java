@@ -11,11 +11,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * This class is like a manager class of class Direction, Location and LocationDirection.
+ * It encapsulates all kinds of methods which takes Direction, Location and LocationDirection as inputs.
+ */
 public class Topology {
     public final int width;
     public final int height;
     public final int depth;
-    private final boolean wrap;
+    private final boolean wrap; // wrap means whether or not one agent can move beyond the boundary of the space
+                                // and appears again in the the opposite boundary.
     private RandomSource randomSource;
 
     public Topology(RandomSource randomSource, int width, int height, int depth, boolean wrap) {
@@ -47,6 +52,10 @@ public class Topology {
                 && l.y >= 0 && l.y < height;
     }
 
+    /**
+     * @param location The position and direction of the current agent
+     * @return the LocationDirection which is in front of the agent
+     */
     public LocationDirection getAdjacent(LocationDirection location) {
         Direction direction = location.direction;
         int x = location.x + direction.x;
