@@ -8,7 +8,7 @@ import cobweb3d.plugins.states.AgentState;
 public interface AgentMutator {
 
     /**
-     * Checks whether this mutator can use given AgentState in the current simulation configuration
+     * Checks whether this mutator can use given AgentState in the current simulation configuration.
      */
     <T extends AgentState> boolean acceptsState(Class<T> type, T value);
 }
