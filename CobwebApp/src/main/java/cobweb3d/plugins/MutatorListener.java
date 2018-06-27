@@ -12,7 +12,10 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-
+/**
+ * This class is the manager of all the mutators used in the simulation.
+ * Different mutators are stored in the Sets.
+ */
 public class MutatorListener implements AgentListener {
 
     private Set<SpawnMutator> spawnMutators = new LinkedHashSet<>();
@@ -26,6 +29,11 @@ public class MutatorListener implements AgentListener {
     private Set<ControllerInputMutator> controllerMutators = new LinkedHashSet<>();
     private Set<AgentMutator> allMutators = new HashSet<>();
 
+    /**
+     * Based on the given config, remove all the unsupported mutators.
+     *
+     * @param config configuration file of the mutator listener.
+     */
     public void loadConfig(MutatorListenerConfig config) {
         Set<AgentMutator> mutatorsToRemove = new HashSet<>();
         for (AgentMutator agentMutator : allMutators) {
@@ -68,6 +76,11 @@ public class MutatorListener implements AgentListener {
         allMutators.add(mutator);
     }
 
+    /**
+     * Remove the given mutator from all the sets which are used to store mutators.
+     *
+     * @param mutator the mutator that is going to be removed.
+     */
     public void removeMutator(AgentMutator mutator) {
         spawnMutators.remove(mutator);
         contactMutators.remove(mutator);
@@ -81,6 +94,9 @@ public class MutatorListener implements AgentListener {
         allMutators.remove(mutator);
     }
 
+    /**
+     * Empty all the sets used to store mutators.
+     */
     public void clearMutators() {
         spawnMutators.clear();
         contactMutators.clear();
@@ -94,6 +110,16 @@ public class MutatorListener implements AgentListener {
         allMutators.clear();
     }
 
+    /**
+     * Checks whether given AgentState can be used in the current simulation configuration.
+     * Note: In v0.1.4, state system hasn't been completely implemented yet.
+     * So this method will always return false.
+     *
+     * @param type  specific Class of AgentState
+     * @param value value of AgentState
+     * @param <T> subclass of class AgentState
+     * @return true if AgentState supported in current configuration
+     */
     public <T extends AgentState> boolean supportsState(Class<T> type, T value) {
         for (AgentMutator mutator : allMutators) {
             if (mutator.acceptsState(type, value))

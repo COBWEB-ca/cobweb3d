@@ -18,6 +18,7 @@ import java.util.Map;
 
 public class Environment extends BaseEnvironment {
     public AgentParams[] agentParams;
+    // the map "plugins" maps from the EnvironmentMutator class to the instance of that mutator.
     private Map<Class<? extends EnvironmentMutator>, EnvironmentMutator> plugins = new LinkedHashMap<>();
 
     public Environment(SimulationInternals simulation) {

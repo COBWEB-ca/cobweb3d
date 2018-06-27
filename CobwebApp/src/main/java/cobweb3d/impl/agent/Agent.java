@@ -95,7 +95,8 @@ public class Agent extends BaseAgent {
 
     /**
      * If the agent is too old, let it die.
-     * The other updating work is left to the controller of this agent.
+     * The other updating work is left to the controller of this agent,
+     * which determines the movement of this agent in this tick.
      * For information relating to the default controller, please refer to the class cobweb3d.impl.ai.SimpleController
      */
     @Override
