@@ -18,6 +18,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * This class manages the simulation process in the given environment,
+ * e.g., time collapse, load agents, etc.
+ */
 public class Simulation implements SimulationInternals, SimulationInterface {
 
     public SimulationConfig simulationConfig;
