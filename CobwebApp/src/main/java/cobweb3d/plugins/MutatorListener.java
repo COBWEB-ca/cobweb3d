@@ -27,6 +27,7 @@ public class MutatorListener implements AgentListener {
     private Set<DataLoggingMutator> dataLoggingMutators = new LinkedHashSet<>();
     private Set<ConsumptionMutator> consumptionMutators = new LinkedHashSet<>();
     private Set<ControllerInputMutator> controllerMutators = new LinkedHashSet<>();
+    // allMutators keeps track of all mutators that ever existed during the simulation.
     private Set<AgentMutator> allMutators = new HashSet<>();
 
     /**
@@ -43,6 +44,8 @@ public class MutatorListener implements AgentListener {
         }
         for (AgentMutator agentMutator : mutatorsToRemove) {
             removeMutator(agentMutator);
+            // method "removeMutator" removes the input from all the sets.
+            // we have to add the input back to the set allMutators, since it tracks all the mutators that existed.
             allMutators.add(agentMutator);
         }
     }
