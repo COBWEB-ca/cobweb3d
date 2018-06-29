@@ -3,7 +3,7 @@ package cobweb3d.impl.logging;
 import cobweb3d.impl.Simulation;
 import cobweb3d.impl.logging.strategies.ExcelXSSFSavingStrategy;
 import cobweb3d.impl.logging.strategies.printwriter.CSVSavingStrategy;
-import cobweb3d.impl.logging.strategies.printwriter.PlainTextSavingStategy;
+import cobweb3d.impl.logging.strategies.printwriter.PlainTextSavingStrategy;
 import cobweb3d.impl.stats.BaseStatsProvider;
 import cobweb3d.plugins.mutators.DataLoggingMutator;
 import cobweb3d.ui.UpdatableUI;
@@ -60,7 +60,7 @@ public class LogManager implements UpdatableUI {
             if (lowercaseExt.contains("csv"))
                 return new CSVSavingStrategy();
             else if (lowercaseExt.contains("log"))
-                return new PlainTextSavingStategy();
+                return new PlainTextSavingStrategy();
             else if (lowercaseExt.contains("xlsx"))
                 return new ExcelXSSFSavingStrategy();
         }
