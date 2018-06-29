@@ -22,7 +22,7 @@ public interface DataLoggingMutator extends AgentMutator {
     int getTableCount();
 
     /**
-     * By using methods from statsProvider, log the current simulation data into the data logger.
+     * By using methods from statsProvider, log the current simulation data into the DataTable.
      *
      * @param statsProvider the statsProvider who monitors the simulation procedure.
      */

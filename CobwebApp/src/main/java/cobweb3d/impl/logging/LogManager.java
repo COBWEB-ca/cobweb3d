@@ -14,6 +14,9 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * This class takes charge of all the logging work.
+ */
 public class LogManager implements UpdatableUI {
     private DataTable coreDataTable;
     private BaseStatsProvider baseStatsProvider;
@@ -45,6 +48,7 @@ public class LogManager implements UpdatableUI {
 
     public Set<DataLoggingMutator> getEnabledMutators() {
         if (enabledMutators == null || dataLoggingMutators.size() != baseStatsProvider.getDataLoggingPlugins().size()) {
+            // In this case, we recreate dataLoggingMutators and enabledMutators based on the current baseStatsProvider.
             dataLoggingMutators = baseStatsProvider.getDataLoggingPlugins();
             enabledMutators = new HashSet<>();
             for (DataLoggingMutator plugin : getDataLoggingPlugins()) {
@@ -54,6 +58,11 @@ public class LogManager implements UpdatableUI {
         return enabledMutators;
     }
 
+    /**
+     * Return a saving strategy, which is able to log data from coreDataTable to a file.
+     * @param fileExt the desired storage form.
+     * @return  A Saving Strategy which saves data in CSV, plain text or Excel form. Default: CSV.
+     */
     public static SavingStrategy getSavingStrategyForExt(String fileExt) {
         if (fileExt != null && !fileExt.isEmpty()) {
             String lowercaseExt = fileExt.toLowerCase();
@@ -69,6 +78,14 @@ public class LogManager implements UpdatableUI {
         return new CSVSavingStrategy();
     }
 
+    /**
+     * This method initializes the first row of a new DataTable.
+     * The first four columns represent values of (tick), (quantity, total energy of all agents) and (average energy of one agent).
+     * The rest of columns represent values of quantity, total energy and average energy of agents in a specific type.
+     *
+     * @param tick The tick when simulation is in that state.
+     * @param logRow The row of one DataTable where data will be stored.
+     */
     public void writeLogEntry(long tick, DataTable.SmartLogRow logRow) {
         long agentCount = baseStatsProvider.getAgentCount();
         long totEnergy = baseStatsProvider.countAgentEnergy();
@@ -87,6 +104,12 @@ public class LogManager implements UpdatableUI {
         }
     }
 
+    /**
+     * Let all the supported plugins update its DataTable using baseStatsProvider.
+     * Note: Data is only updated in DataTables of plugins. It won't be saved into file until method "saveLog()" is called.
+     *
+     * @param synchronous whether to wait for component to complete update before returning
+     */
     @Override
     public void update(boolean synchronous) {
         if (logConfig == null) {
@@ -103,6 +126,12 @@ public class LogManager implements UpdatableUI {
         nextDataRow++;
     }
 
+    /**
+     * Save data from Plugins' DataTables to input file.
+     *
+     * @param file File where data will be stored.
+     * @param savingStrategy The selected form that data will be stored.
+     */
     public void saveLog(@NotNull File file, @NotNull SavingStrategy savingStrategy) {
         if (savingStrategy != null)
             savingStrategy.save(logConfig == null || logConfig.logCore ? coreDataTable : null, logConfig == null ? getDataLoggingPlugins() : getEnabledMutators(), file);
