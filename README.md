@@ -1,4 +1,6 @@
 # COBWEB 3D
+[![Build Status](https://travis-ci.com/Walden-Shen/cobweb3d.svg?branch=master)](https://travis-ci.com/Walden-Shen/cobweb3d)
+
 COBWEB (Complexity & Organized Behaviour Within Environmental Bounds) is a computer simulation model which can be used for research in a variety of fields such as ecology, health, psychology, economic geography, climate change impacts and ethics.
 This project is a 3D port of COBWEB 2, with differing feature support.
 
