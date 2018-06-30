@@ -12,6 +12,7 @@ public class ReproductionState implements AgentState {
     @ConfXMLTag("pregnant")
     protected boolean pregnant = false;
 
+    // Husband of the mother agent. If the agent breeds asexually, this field will be null.
     @ConfXMLTag("breedPartner")
     protected BaseAgent breedPartner;
 
@@ -25,6 +26,13 @@ public class ReproductionState implements AgentState {
         this.pregnant = pregnant;
     }
 
+    /**
+     * A static method which returns an instance of this class.
+     *
+     * @param pregPeriod Time required for the baby to born.
+     * @param breedPartner Husband of the mother agent. If the agent breeds asexually, this field will be null.
+     * @return A reproduction state with the given pregPeriod and the breedPartner.
+     */
     public static ReproductionState makePregnantState(int pregPeriod, BaseAgent breedPartner) {
         return new ReproductionState(pregPeriod, true, breedPartner);
     }
