@@ -28,6 +28,12 @@ public abstract class StatefulMutatorBase<T extends AgentState, R extends Parame
         return getAgentState(agent) != null;
     }
 
+    /**
+     * Remove one specific state (decided by class name) from the given agent.
+     *
+     * @param agent The agent whose one state will be removed.
+     * @return The agent without that state.
+     */
     protected T removeAgentState(BaseAgent agent) {
         if (agent instanceof Agent) return ((Agent) agent).removeState(getStateClass());
         else return null;
