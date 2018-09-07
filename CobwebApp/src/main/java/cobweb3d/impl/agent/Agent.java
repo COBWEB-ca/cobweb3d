@@ -243,7 +243,7 @@ public class Agent extends BaseAgent {
      * In this case, the agent may fight with the other agent, and loses more energy.
      * Or if the other agent is the same type with this agent, they may reproduce a child. (Unimplemented in v0.1.4)
      *
-     * @param otherAgent
+     * @param otherAgent the other agent which the current agent bumps into
      */
     private void onStepAgentBump(BaseAgent otherAgent) {
         simulation.getAgentListener().onContact(this, otherAgent);

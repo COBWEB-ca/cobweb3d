@@ -31,10 +31,17 @@ public class PluginProvider {
         return orderedClasses;
     }
 
+    /**
+     * This method uses reflection to detect which plugins are loaded
+     * into the program in real time, then returns all of them in a set.
+     * @return A set which includes all the plugins that is in use.
+     */
     public static Set<Class<? extends AgentMutator>> getConfiguratedPlugins() {
         Reflections pluginsPackage = new Reflections("cobweb3d.plugins");
         SortedSet<Class<? extends AgentMutator>> orderedClasses = new TreeSet<>(new PluginOrderComparator());
-        orderedClasses.addAll(pluginsPackage.getSubTypesOf(AgentMutator.class).stream().filter(p -> !p.isInterface() && ConfiguratedMutator.class.isAssignableFrom(p) && !Modifier.isAbstract(p.getModifiers())).collect(Collectors.toList()));
+        orderedClasses.addAll(pluginsPackage
+                .getSubTypesOf(AgentMutator.class).stream()
+                .filter(p -> !p.isInterface() && ConfiguratedMutator.class.isAssignableFrom(p) && !Modifier.isAbstract(p.getModifiers())).collect(Collectors.toList()));
         return orderedClasses;
     }
 
@@ -57,6 +64,12 @@ public class PluginProvider {
         }
     }
 
+    /**
+     * This method gets all the plugins which are currently in use, then creates
+     * the corresponding mutator instances and adds them into "simulation".
+     *
+     * @param simulation the current simulation.
+     */
     public static void constructPlugins(Simulation simulation) {
         simulation.mutatorListener.clearMutators();
         Set<Class<? extends AgentMutator>> classes = getConfiguratedPlugins();
