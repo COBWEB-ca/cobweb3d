@@ -6,6 +6,9 @@ import cobweb3d.plugins.mutators.DataLoggingMutator;
 import java.io.PrintWriter;
 import java.util.*;
 
+/**
+ * This class saves data in CSV form.
+ */
 public class CSVSavingStrategy extends AbstractPrintWritingSavingStrategy {
 
     private char delimiter;
@@ -18,8 +21,19 @@ public class CSVSavingStrategy extends AbstractPrintWritingSavingStrategy {
         this.delimiter = delimiter;
     }
 
+    /**
+     * This method saves data in DataTable to PrintWriter.
+     *
+     * @param printWriter An IO stream where data is written into.
+     * @param coreData An instance of class DataTable which comprises data of a simulation.
+     * @param plugins A collection of plugins which provide the name of each column.
+     * @param lastSavedTick From which line do we begin to write data into the printWriter.
+     * @return The last row number of the current DataTable.
+     */
     @Override
     int saveDataToPrintWriter(PrintWriter printWriter, DataTable coreData, Collection<DataLoggingMutator> plugins, int lastSavedTick) {
+        // First it verifies whether or not we write entire DataTable into the file.
+        // If so, it uses plugins given to initialize column names.
         if (lastSavedTick == 0) {
             Iterator<Map.Entry<Integer, String>> iterator = coreData.columnInts.entrySet().iterator();
             while (iterator.hasNext()) {
@@ -65,6 +79,13 @@ public class CSVSavingStrategy extends AbstractPrintWritingSavingStrategy {
         return maxRows;
     }
 
+    /**
+     * Write the input row into the PrintWriter.
+     * Note: It's not necessarily in CSV form, since the delimiter can be changed.
+     *
+     * @param printWriter The place to write in.
+     * @param row A row of data which is going to be written into the file.
+     */
     public void printRowToCSV(PrintWriter printWriter, DataTable.SmartLogRow row) {
         if (row == null) return;
         Set<Integer> col = new TreeSet<>(row.cells.keySet());

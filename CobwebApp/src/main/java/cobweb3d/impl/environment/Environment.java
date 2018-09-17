@@ -16,14 +16,28 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * This is the subclass of class BaseEnvironment.
+ * Besides the content inherited from BaseEnvironment, this class adds both the parameters of agents and plugins.
+ */
 public class Environment extends BaseEnvironment {
+    // A list which comprises the information of different agents.
     public AgentParams[] agentParams;
+    // the map "plugins" maps from the EnvironmentMutator class to the instance of that mutator.
     private Map<Class<? extends EnvironmentMutator>, EnvironmentMutator> plugins = new LinkedHashMap<>();
 
     public Environment(SimulationInternals simulation) {
         super(simulation);
     }
 
+    /**
+     * Set both the environment parameters and the agent parameters based on the given input.
+     *
+     * @param envParams the environment parameters that are going to be set.
+     * @param agentParams the agent parameters that are going to be set.
+     * @param keepOldAgents whether or not keep the agents that are alive before this method is called
+     * @throws IllegalArgumentException The form of the parameter doesn't satisfy the requirements.
+     */
     public synchronized void setParams(BaseEnvironmentParams envParams, BaseAgentParams agentParams, boolean keepOldAgents) throws IllegalArgumentException {
         this.agentParams = agentParams.agentParams;
         super.setParams(envParams, keepOldAgents);
@@ -69,6 +83,8 @@ public class Environment extends BaseEnvironment {
      * Searches through each location to find every old agent.  Each agent that is found
      * is added to the scheduler if the scheduler is new.  Agents that are off the new
      * environment are removed from the environment.
+     *
+     * And every old agent's parameters will be updated according to the new agentParams.
      */
     private void loadOldAgents() {
         // Add in-bounds old agents to the new scheduler and update new
@@ -85,6 +101,12 @@ public class Environment extends BaseEnvironment {
         }
     }
 
+    /**
+     * Get all the empty locations from the 3*3*3 space centered at given position.
+     *
+     * @param position the start location where we are going to search for empty spots.
+     * @return all the empty locations from the 3*3*3 space centered at given position.
+     */
     public Collection<Location> getEmptyNearLocations(Location position) {
         Collection<Location> result = new ArrayList<>(8);
         Direction direction = new Direction(0, 0, 0);

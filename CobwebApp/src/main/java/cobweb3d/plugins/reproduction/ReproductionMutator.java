@@ -35,7 +35,14 @@ public class ReproductionMutator extends StatefulMutatorBase<ReproductionState, 
         return object.isAssignableFrom(ReproductionParams.class);
     }
 
+    /**
+     * This method is called when one agent is trying to give birth.
+     *
+     * @param agent The agent who is trying to give birth.
+     * @param location The location where the child will be born in.
+     */
     private void tryGiveBirth(BaseAgent agent, Location location) {
+        // Verify whether or not the agent has enough energy to give birth && its pregnancy period is over
         if (agent.enoughEnergy(params.of(agent).breedEnergy.getValue()) && getPregnancyPeriod(agent) <= 0) {
             LocationDirection breedPos = new LocationDirection(location, agent.getPosition().direction);
             BaseAgent breedPartner;
@@ -50,16 +57,29 @@ public class ReproductionMutator extends StatefulMutatorBase<ReproductionState, 
         }
     }
 
+    /**
+     * One agent is trying to breed asexually. If succeed, it will be in pregnant state.
+     *
+     * @param agent The mother agent who is trying to breed asexually.
+     */
     private void tryAsexualBreed(BaseAgent agent) {
         int breedEnergy = params.of(agent).breedEnergy.getValue();
+        // Decide whether or not this breed is successful by probability.
         if ((breedEnergy == 0 || agent.enoughEnergy(breedEnergy)) && params.of(agent).asexualBreedChance.getValue() != 0.0
                 && simulation.getRandom().nextFloat() < params.of(agent).asexualBreedChance.getValue()) {
             setAgentState(agent, ReproductionState.makePregnantState(params.of(agent).asexPregnancyPeriod.getValue(), null));
         }
     }
 
+    /**
+     * Two agents are trying to breed sexually. If succeed, the mother will be in pregnant state.
+     *
+     * @param mother The mother agent who is trying to breed.
+     * @param father The father agent who is trying to breed.
+     */
     private void trySexualBreed(BaseAgent mother, BaseAgent father) {
         if (mother.getType() == father.getType()) {
+            // Decide whether or not this breed is successful by probability.
             // TODO: double sim = 0.0;
             boolean canBreed = !isPregnant(mother) && mother.enoughEnergy(params.of(mother).breedEnergy.getValue()) && params.of(mother).sexualBreedChance.getValue() != 0.0
                     && simulation.getRandom().nextFloat() < params.of(mother).sexualBreedChance.getValue();
@@ -103,11 +123,24 @@ public class ReproductionMutator extends StatefulMutatorBase<ReproductionState, 
         trySexualBreed(bumper, bumpee);
     }
 
+    /**
+     * On each step of the pregnant mother agent, she will try to give birth in the location where she moves from.
+     *
+     * @param agent BaseAgent in question.
+     * @param from  Old Location. Null if agent is being placed in the environment
+     * @param to    New location. Null if agent is being removed from the environment
+     */
     @Override
     public void onStep(BaseAgent agent, Location from, Location to) {
         if (isPregnant(agent)) tryGiveBirth(agent, from);
     }
 
+    /**
+     * Once the agent is updated, her pregPeriod will minus one.
+     * If she is not pregnant, she will try to breed asexually.
+     *
+     * @param agent the agent to update.
+     */
     @Override
     public void onUpdate(BaseAgent agent) {
         if (isPregnant(agent)) getAgentState(agent).pregPeriod--;
