@@ -39,26 +39,22 @@ public class ExchangeParams extends PerAgentParams<ExchangeAgentParams> {
      * @return : factorial value of 'n'
      */
     public static int factorial(int n) {
-        //1
         int fact = 1;
-        //2
         for (int i = 1; i <= n; i++) {
-            //3
             fact = fact * i;
         }
-        //4
         return fact;
     }
 
     /**
-     * Find the factorial of a number
+     * Find the summation from 1 to n
      *
-     * @param n : number to find the factorial
-     * @return : factorial value of 'n'
+     * @param n : number to find the summation
+     * @return : the result of 1 + 2 + ... + n
      */
     public static int summate(int n) {
         int sum = 0;
-        for (int i = 0; i < n; i++) sum += i;
+        for (int i = 1; i < n; i++) sum += i;
         return sum;
     }
 
