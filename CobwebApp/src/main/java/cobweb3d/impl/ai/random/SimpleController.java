@@ -1,4 +1,4 @@
-package cobweb3d.impl.ai;
+package cobweb3d.impl.ai.random;
 
 import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.core.agent.Controller;
@@ -6,6 +6,9 @@ import cobweb3d.core.agent.ControllerListener;
 import cobweb3d.impl.agent.Agent;
 import cobwebutil.RandomNoGenerator;
 
+/**
+ * This class determines the survival strategy of one agent.
+ */
 public class SimpleController implements Controller {
 
     RandomNoGenerator random;
@@ -14,6 +17,12 @@ public class SimpleController implements Controller {
         random = new RandomNoGenerator();
     }
 
+    /**
+     * This is a simple demo survival strategy, which randomly turn around or move forward.
+     *
+     * @param agent the agent who is controlled by this strategy
+     * @param inputCallback
+     */
     @Override
     public void controlAgent(BaseAgent agent, ControllerListener inputCallback) {
         if (agent instanceof Agent) {

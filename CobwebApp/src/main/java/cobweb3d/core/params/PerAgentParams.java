@@ -62,8 +62,8 @@ public abstract class PerAgentParams<T extends ParameterSerializable> implements
     /**
      * Wrapper for getAgentParams(BaseAgent agent).
      *
-     * @param agent
-     * @return
+     * @param agent The agent whose params we query.
+     * @return Parameters of the agent.
      */
     public T of(BaseAgent agent) {
         return getAgentParams(agent);

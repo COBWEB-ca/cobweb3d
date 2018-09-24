@@ -1,4 +1,4 @@
-package cobweb3d.impl.ai;
+package cobweb3d.impl.ai.random;
 
 import cobweb3d.core.SimulationInternals;
 import cobweb3d.core.agent.Controller;

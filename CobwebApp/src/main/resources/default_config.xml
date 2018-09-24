@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <COBWEB2Config config-version="2018-01-01" xmlns="http://cobweb.ca/schema/cobweb2/config">
     <AgentTypeCount>4</AgentTypeCount>
-    <ControllerName>cobweb3d.impl.ai.SimpleController</ControllerName>
+    <ControllerName>cobweb3d.impl.ai.random.SimpleController</ControllerName>
     <randomSeed>0</randomSeed>
     <Environment>
         <Width>10</Width>
@@ -50,7 +50,7 @@
             </Agent>
         </AgentParams>
     </Agents>
-    <ControllerConfig class="cobweb3d.impl.ai.SimpleControllerParams">
+    <ControllerConfig class="cobweb3d.impl.ai.random.SimpleControllerParams">
         <AgentParams>
             <Agent id="1"/>
             <Agent id="2"/>
