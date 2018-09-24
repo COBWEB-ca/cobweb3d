@@ -6,6 +6,7 @@ public class ResourceParams extends PerAgentParams<ResourceAgentParams> {
 
     private static final long serialVersionUID = 2L;
 
+    public ResourceParams()
     @Override
     protected ResourceAgentParams newAgentParam() {
         return new ResourceAgentParams();
