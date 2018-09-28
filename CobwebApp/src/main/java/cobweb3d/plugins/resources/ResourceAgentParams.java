@@ -1,6 +1,5 @@
 package cobweb3d.plugins.resources;
 
-import cobweb3d.core.params.ResizableParam;
 import cobwebutil.io.ConfDisplayName;
 import cobwebutil.io.ConfXMLTag;
 import cobwebutil.io.ParameterSerializable;
@@ -47,4 +46,11 @@ public class ResourceAgentParams implements ParameterSerializable {
     @ConfXMLTag("DepleteTimeSteps")
     public int depleteTime = 40;
 
+    /**
+     * How much the agent that prefers this food will gain in energy
+     * upon eating the food
+     */
+    @ConfDisplayName("Energy gain from food")
+    @ConfXMLTag("EnergyGain")
+    public int energyGain = 100;
 }
