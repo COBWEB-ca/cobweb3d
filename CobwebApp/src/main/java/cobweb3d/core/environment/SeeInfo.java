@@ -1,4 +1,4 @@
-package cobweb3d.plugins.vision;
+package cobweb3d.core.environment;
 
 
 import cobweb3d.core.location.LocationDirection;

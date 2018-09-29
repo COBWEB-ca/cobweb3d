@@ -1,10 +1,10 @@
 package cobweb3d.plugins.vision;
 
 
+import cobweb3d.core.environment.SeeInfo;
 import cobweb3d.plugins.states.AgentState;
 import cobwebutil.io.ConfList;
 import cobwebutil.io.ConfXMLTag;
-import cobwebutil.io.ParameterSerializable;
 
 import java.util.LinkedList;
 import java.util.List;
