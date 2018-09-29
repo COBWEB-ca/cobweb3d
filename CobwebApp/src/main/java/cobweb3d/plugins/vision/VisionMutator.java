@@ -2,6 +2,7 @@ package cobweb3d.plugins.vision;
 
 import cobweb3d.core.SimulationTimeSpace;
 import cobweb3d.core.agent.BaseAgent;
+import cobweb3d.core.environment.BaseEnvironment;
 import cobweb3d.core.environment.Topology;
 import cobweb3d.core.location.Location;
 import cobweb3d.plugins.mutators.StatefulMutatorBase;
@@ -11,7 +12,7 @@ import cobweb3d.plugins.states.AgentState;
 public class VisionMutator extends StatefulMutatorBase<VisionState, VisionParams> implements StepMutator {
 
     VisionParams params;
-    private SimulationTimeSpace simulation;
+    private BaseEnvironment environment;
 
     public VisionMutator(Class<VisionState> stateClass) {
         super(VisionState.class);
@@ -36,6 +37,6 @@ public class VisionMutator extends StatefulMutatorBase<VisionState, VisionParams
 
     @Override
     public void onStep(BaseAgent agent, Location from, Location to) {
-        Topology topology = simulation.getTopology();
+        Topology topology = environment.topology;
     }
 }

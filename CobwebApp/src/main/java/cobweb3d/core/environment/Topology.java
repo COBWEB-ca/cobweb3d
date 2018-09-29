@@ -31,12 +31,47 @@ public class Topology {
         this.wrap = wrap;
     }
 
-    public List<SeeInfo> getSeeableObjects(LocationDirection location, int frontEyesight, int backEyesight, int upbackEyesight, int underbackEyesight) {
+    public List<SeeInfo> getSeeableArea(LocationDirection location, int frontEyesight, int backEyesight, int leftEyesight,
+                                        int rightEyesight, int upEyesight, int downEyesight) {
+        int upperBound, lowerBound, leftBound, rightBound, frontBound, backBound;
         Direction direction = location.direction;
-        int upperbound = location.y;
-        int lowerbound = location.y;
-        while (isValidLocation(location.x, upperbound+1, location.z)) upperbound += 1;
-        while (isValidLocation(location.x, lowerbound-1, location.z)) lowerbound += 1;
+        if (direction.y == 0) {
+            upperBound = location.y + upEyesight;
+            lowerBound = location.y - downEyesight;
+            while (upperBound > location.y && !isValidLocation(location.x, upperBound, location.z)) upperBound -= 1;
+            while (lowerBound < location.y && !isValidLocation(location.x, lowerBound, location.z)) lowerBound += 1;
+            if (direction.z == 0) { // agent faces to x axis
+                if (direction.x == 1) { // faces to x positive
+                    leftBound = location.z + leftEyesight;
+                    rightBound = location.z - rightEyesight;
+                    frontBound = location.x + frontEyesight;
+                    backBound = location.x - frontEyesight;
+                    while (leftBound > location.z && !isValidLocation(location.x, location.y, leftBound)) leftBound -= 1;
+                    while (rightBound < location.z && !isValidLocation(location.x, location.y, rightBound)) rightBound += 1;
+                    while (frontBound > location.x && !isValidLocation(frontBound, location.y, location.z)) frontBound -= 1;
+                } else { // faces to x negative
+                    leftBound = location.z - leftEyesight;
+                    rightBound = location.z + rightEyesight;
+                    while (leftBound < location.z && !isValidLocation(location.x, location.y, leftBound)) leftBound += 1;
+                    while (rightBound > location.z && !isValidLocation(location.x, location.y, rightBound)) rightBound -= 1;
+                }
+            } else {
+                assert (direction.z == 1 || direction.z == -1); // faces to z axis
+                if (direction.z == 1) { // faces to z positive
+                    leftBound = location.x - leftEyesight;
+                    rightBound = location.x + rightEyesight;
+                    while (leftBound < location.x && !isValidLocation(leftBound, location.y, location.z)) leftBound += 1;
+                    while (rightBound > location.x && !isValidLocation(rightBound, location.y, location.z)) rightBound -= 1;
+                } else { // faces to z negative
+                    leftBound = location.x + leftEyesight;
+                    rightBound = location.x - rightEyesight;
+                    while (leftBound > location.x && !isValidLocation(leftBound, location.y, location.z)) leftBound -= 1;
+                    while (rightBound < location.x && !isValidLocation(rightBound, location.y, location.z)) rightBound += 1;
+                }
+            }
+        } else if (direction.y == 1) {
+
+        }
 
         return null; // Placeholder
 
@@ -62,7 +97,8 @@ public class Topology {
     public boolean isValidLocation(Location l) {
         return l != null
                 && l.x >= 0 && l.x < width
-                && l.y >= 0 && l.y < height;
+                && l.y >= 0 && l.y < height
+                && l.z >= 0 && l.z < depth;
     }
 
     /**
