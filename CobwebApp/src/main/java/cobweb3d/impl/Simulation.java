@@ -3,6 +3,7 @@ package cobweb3d.impl;
 import cobweb3d.core.SimulationInternals;
 import cobweb3d.core.agent.AgentListener;
 import cobweb3d.core.agent.BaseAgent;
+import cobweb3d.core.environment.BaseEnvironment;
 import cobweb3d.core.environment.Topology;
 import cobweb3d.core.location.Location;
 import cobweb3d.core.location.LocationDirection;
@@ -54,6 +55,11 @@ public class Simulation implements SimulationInternals, SimulationInterface {
     @Override
     public Topology getTopology() {
         return environment != null ? environment.topology : null;
+    }
+
+    @Override
+    public BaseEnvironment getEnvironment() {
+        return environment;
     }
 
     public synchronized Agent addAgent(Location location, int agentType) {

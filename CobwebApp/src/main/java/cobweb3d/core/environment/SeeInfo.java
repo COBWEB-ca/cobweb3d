@@ -1,14 +1,14 @@
 package cobweb3d.core.environment;
 
 
-import cobweb3d.core.location.LocationDirection;
+import cobweb3d.core.location.Location;
 
 public class SeeInfo {
     private final int distance;
 
     private final int type;
 
-    private final LocationDirection location;
+    private final Location location;
 
 
     private static final long serialVersionUID = 1L;
@@ -17,9 +17,9 @@ public class SeeInfo {
      * Contains the information of what the agent sees.
      *  @param distance Distance to t.
      * @param type Type of object seen.
-     * @param location
+     * @param location the location of that object.
      */
-    public SeeInfo(int distance, int type, LocationDirection location) {
+    public SeeInfo(int distance, int type, Location location) {
         this.distance = distance;
         this.type = type;
         this.location = location;

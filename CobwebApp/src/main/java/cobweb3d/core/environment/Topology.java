@@ -31,8 +31,16 @@ public class Topology {
         this.wrap = wrap;
     }
 
-    public List<SeeInfo> getSeeableArea(LocationDirection location, int frontEyesight, int backEyesight, int leftEyesight,
+    public List<Location> getSeeableArea(LocationDirection location, int frontEyesight, int backEyesight, int leftEyesight,
                                         int rightEyesight, int upEyesight, int downEyesight) {
+        Direction direction = location.direction;
+        int x = location.x + direction.x;
+        int y = location.y + direction.y;
+        int z = location.z + direction.z;
+        ArrayList<Location> result =  new ArrayList<>();
+        if (isValidLocation(x, y, z)) result.add(new Location(x, y, z));
+        return result;
+        /**
         int upperBound, lowerBound, leftBound, rightBound, frontBound, backBound;
         Direction direction = location.direction;
         if (direction.y == 0) {
@@ -74,6 +82,7 @@ public class Topology {
         }
 
         return null; // Placeholder
+         */
 
     }
     public Location getAdjacent(Location location, Direction direction) {
