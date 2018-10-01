@@ -31,6 +31,60 @@ public class Topology {
         this.wrap = wrap;
     }
 
+    public List<Location> getSeeableArea(LocationDirection location, int frontEyesight, int backEyesight, int leftEyesight,
+                                        int rightEyesight, int upEyesight, int downEyesight) {
+        Direction direction = location.direction;
+        int x = location.x + direction.x;
+        int y = location.y + direction.y;
+        int z = location.z + direction.z;
+        ArrayList<Location> result =  new ArrayList<>();
+        if (isValidLocation(x, y, z)) result.add(new Location(x, y, z));
+        return result;
+        /**
+        int upperBound, lowerBound, leftBound, rightBound, frontBound, backBound;
+        Direction direction = location.direction;
+        if (direction.y == 0) {
+            upperBound = location.y + upEyesight;
+            lowerBound = location.y - downEyesight;
+            while (upperBound > location.y && !isValidLocation(location.x, upperBound, location.z)) upperBound -= 1;
+            while (lowerBound < location.y && !isValidLocation(location.x, lowerBound, location.z)) lowerBound += 1;
+            if (direction.z == 0) { // agent faces to x axis
+                if (direction.x == 1) { // faces to x positive
+                    leftBound = location.z + leftEyesight;
+                    rightBound = location.z - rightEyesight;
+                    frontBound = location.x + frontEyesight;
+                    backBound = location.x - frontEyesight;
+                    while (leftBound > location.z && !isValidLocation(location.x, location.y, leftBound)) leftBound -= 1;
+                    while (rightBound < location.z && !isValidLocation(location.x, location.y, rightBound)) rightBound += 1;
+                    while (frontBound > location.x && !isValidLocation(frontBound, location.y, location.z)) frontBound -= 1;
+                } else { // faces to x negative
+                    leftBound = location.z - leftEyesight;
+                    rightBound = location.z + rightEyesight;
+                    while (leftBound < location.z && !isValidLocation(location.x, location.y, leftBound)) leftBound += 1;
+                    while (rightBound > location.z && !isValidLocation(location.x, location.y, rightBound)) rightBound -= 1;
+                }
+            } else {
+                assert (direction.z == 1 || direction.z == -1); // faces to z axis
+                if (direction.z == 1) { // faces to z positive
+                    leftBound = location.x - leftEyesight;
+                    rightBound = location.x + rightEyesight;
+                    while (leftBound < location.x && !isValidLocation(leftBound, location.y, location.z)) leftBound += 1;
+                    while (rightBound > location.x && !isValidLocation(rightBound, location.y, location.z)) rightBound -= 1;
+                } else { // faces to z negative
+                    leftBound = location.x + leftEyesight;
+                    rightBound = location.x - rightEyesight;
+                    while (leftBound > location.x && !isValidLocation(leftBound, location.y, location.z)) leftBound -= 1;
+                    while (rightBound < location.x && !isValidLocation(rightBound, location.y, location.z)) rightBound += 1;
+                }
+            }
+        } else if (direction.y == 1) {
+
+        }
+
+        return null; // Placeholder
+         */
+
+    }
     public Location getAdjacent(Location location, Direction direction) {
         return getAdjacent(new LocationDirection(location, direction));
     }
@@ -46,10 +100,14 @@ public class Topology {
         return l;
     }
 
+    public boolean isValidLocation(int x, int y, int z) {
+        return x >= 0 && x < width && y >= 0 && y < height && z >= 0 && z < depth;
+    }
     public boolean isValidLocation(Location l) {
         return l != null
                 && l.x >= 0 && l.x < width
-                && l.y >= 0 && l.y < height;
+                && l.y >= 0 && l.y < height
+                && l.z >= 0 && l.z < depth;
     }
 
     /**
