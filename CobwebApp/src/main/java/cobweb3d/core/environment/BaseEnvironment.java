@@ -8,6 +8,7 @@ import cobweb3d.core.params.BaseEnvironmentParams;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -90,6 +91,13 @@ public class BaseEnvironment implements Updatable {
                 }
             }
         }
+    }
+
+    public List<SeeInfo> getObjectsInLocations(List<Location> seeableAreas) {
+        for (Location area: seeableAreas) {
+
+        }
+        return null;
     }
 
     public boolean isOccupied(Location l) {

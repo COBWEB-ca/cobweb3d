@@ -19,6 +19,12 @@ public class VisionState implements AgentState {
     public VisionState() {
     }
 
+    public VisionState(List<SeeInfo> objectsSeen) {
+        this.objectsSeen = objectsSeen;
+    }
+
+
+
     @Override
     public boolean isTransient() {
         return false;
