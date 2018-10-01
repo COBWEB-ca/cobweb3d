@@ -235,6 +235,7 @@ public class Agent extends BaseAgent {
      */
     private void onStepFreeTile(LocationDirection destPos) {
         move(destPos);
+        onStepFood(destPos);
         changeEnergy(-params.stepEnergy.getValue(), new StepForwardCause());
     }
 
@@ -253,6 +254,11 @@ public class Agent extends BaseAgent {
         if (otherAgent instanceof Agent && otherAgent.getType() == getType()) {
             // TODO:
         }
+    }
+
+    private void onStepFood(Location l) {
+        simulation.getAgentListener().onConsumeFood(this, environment.foodArray[l.x][l.y][l.z]);
+        environment.removeFood(l);
     }
 
     private boolean canStep(Location dest) {

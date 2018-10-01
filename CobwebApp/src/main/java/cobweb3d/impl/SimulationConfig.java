@@ -60,6 +60,10 @@ public class SimulationConfig implements ParameterSerializable, AgentFoodCountab
     @ConfXMLTag("keepOldAgents")
     public boolean keepOldAgents = false;
 
+    @ConfDisplayName("Spawn new food")
+    @ConfXMLTag("spawnNewFood")
+    public boolean spawnNewFood = true;
+
     /**
      * Creates the default Cobweb simulation parameters.
      */

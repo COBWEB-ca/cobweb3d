@@ -5,6 +5,7 @@ import cobweb3d.impl.Simulation;
 import cobweb3d.rendering.SimulationRenderer;
 import cobweb3d.rendering.SimulationRendererMenuItem;
 import cobweb3d.rendering.javafx.renderers.GridRenderer;
+import cobweb3d.rendering.javafx.renderers.ResourceRenderer;
 import cobweb3d.rendering.javafx.renderers.UncachedAgentRenderer;
 import cobweb3d.rendering.javafx.ui.FXSimulationRendererMenuItem;
 import cobwebutil.MaterialColor;
@@ -35,6 +36,7 @@ public class FXSimulationRenderer implements SimulationRenderer {
     private final ChangeListener<Number> resizeListener = (observable, oldValue, newValue) -> resizeRendering((int) renderScene.getParent().getScene().getWidth(),
             (int) renderScene.getParent().getScene().getHeight());
     private UncachedAgentRenderer agentRenderer;
+    private ResourceRenderer resourceRenderer;
 
     private boolean toonRendering = true;
     private boolean outlineRendering = true;
