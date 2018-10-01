@@ -15,6 +15,7 @@ import cobweb3d.plugins.food.ConsumptionParams;
 import cobweb3d.plugins.ported.disease.DiseaseParams;
 import cobweb3d.plugins.reproduction.ReproductionParams;
 import cobweb3d.plugins.transform.TransformationParams;
+import cobweb3d.plugins.vision.VisionParams;
 import cobwebutil.io.ConfDisplayName;
 import cobwebutil.io.ConfSaveInstanceClass;
 import cobwebutil.io.ConfXMLTag;
@@ -96,6 +97,8 @@ public class SimulationConfig implements ParameterSerializable, AgentFoodCountab
     public TransformationParams transformationParams = new TransformationParams(this);
     @ConfXMLTag("Disease")
     public DiseaseParams diseaseParams = new DiseaseParams(this);
+    @ConfXMLTag("Vision")
+    public VisionParams visionParams = new VisionParams(this);
 
 
 

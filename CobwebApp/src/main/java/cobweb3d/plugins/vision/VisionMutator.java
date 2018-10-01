@@ -12,8 +12,7 @@ import cobweb3d.plugins.states.AgentState;
 
 import java.util.List;
 
-//public class VisionMutator extends StatefulMutatorBase<VisionState, VisionParams> implements StepMutator {
-public class VisionMutator extends StatefulMutatorBase<VisionState, VisionParams> {
+public class VisionMutator extends StatefulMutatorBase<VisionState, VisionParams> implements StepMutator {
     VisionParams params;
     private SimulationTimeSpace simulation;
 
@@ -40,15 +39,15 @@ public class VisionMutator extends StatefulMutatorBase<VisionState, VisionParams
     }
 
 
-    /**
+
     @Override
     public void onStep(BaseAgent agent, Location from, Location to) {
         Topology topology = simulation.getTopology();
         VisionAgentParams agentParams = params.of(agent);
         List<Location> seeableArea =
                 topology.getSeeableArea((LocationDirection)to, agentParams.frontEyesight, agentParams.backEyesight,
-                agentParams.leftEyesight, agentParams.rightEyesight, agentParams.upEyesight, agentParams.downEyesight);
+               agentParams.leftEyesight, agentParams.rightEyesight, agentParams.upEyesight, agentParams.downEyesight);
     }
-    */
+
 
 }
