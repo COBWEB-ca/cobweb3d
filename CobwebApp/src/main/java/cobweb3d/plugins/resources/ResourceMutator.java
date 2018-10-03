@@ -32,7 +32,7 @@ public class ResourceMutator implements ConsumptionMutator, ConfiguratedMutator<
 
     @Override
     public void onConsumeFood(BaseAgent agent, int foodType) {
-        if (agent.getType() == foodType) {
+        if (agent.getType() + 1 == foodType) {
             agent.changeEnergy(params.of(agent).energyGain);
         }
     }

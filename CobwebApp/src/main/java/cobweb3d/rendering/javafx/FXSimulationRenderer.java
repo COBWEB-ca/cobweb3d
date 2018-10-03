@@ -74,6 +74,7 @@ public class FXSimulationRenderer implements SimulationRenderer {
     private SubScene initRenderScene() {
         gridRenderer = new GridRenderer(simulation.environment);
         agentRenderer = new UncachedAgentRenderer();
+        resourceRenderer = new ResourceRenderer();
         rootGroup = new Group(gridRenderer, agentRenderer);
         camera = new SimCamera();
 
@@ -91,6 +92,7 @@ public class FXSimulationRenderer implements SimulationRenderer {
                 gridRenderer.focusCamera(camera);
             }
             if (agentRenderer != null) agentRenderer.clearCache();
+            if (resourceRenderer != null) resourceRenderer.clearCache();
             draw();
         }
     }
@@ -101,8 +103,10 @@ public class FXSimulationRenderer implements SimulationRenderer {
             rootGroup.getChildren().remove(agentRenderer);
             agentRenderer = new UncachedAgentRenderer(toonRendering, outlineRendering);
             rootGroup.getChildren().add(agentRenderer);
-            if (simulation != null && simulation.environment != null)
+            if (simulation != null && simulation.environment != null) {
                 agentRenderer.drawAgents(simulation.environment.getAgents()); // TODO: Check concurrency.
+                resourceRenderer.drawFood(simulation.environment.foodArray);
+            }
         }
     }
 
@@ -110,10 +114,15 @@ public class FXSimulationRenderer implements SimulationRenderer {
         if (rootGroup != null) {
             // TODO: FIX FUNCTIONALITY! POOR PERFORMANCE WITH THIS FIX.
             rootGroup.getChildren().remove(agentRenderer);
+            rootGroup.getChildren().remove(resourceRenderer);
             agentRenderer = new UncachedAgentRenderer(toonRendering, outlineRendering);
+            resourceRenderer = new ResourceRenderer(toonRendering, outlineRendering);
             rootGroup.getChildren().add(agentRenderer);
-            if (simulation != null && simulation.environment != null)
+            rootGroup.getChildren().add(resourceRenderer);
+            if (simulation != null && simulation.environment != null) {
                 agentRenderer.drawAgents(new ArrayList<>(simulation.environment.getAgents())); // TODO: Check concurrency.
+                resourceRenderer.drawFood(simulation.environment.foodArray);
+            }
         }
     }
 
