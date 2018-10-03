@@ -5,6 +5,7 @@ package cobweb3d.plugins.ported.disease;
 
 import cobweb3d.core.SimulationTimeSpace;
 import cobweb3d.core.agent.BaseAgent;
+import cobweb3d.impl.Simulation;
 import cobweb3d.plugins.mutators.ContactMutator;
 import cobweb3d.plugins.mutators.SpawnMutator;
 import cobweb3d.plugins.mutators.StatefulMutatorBase;

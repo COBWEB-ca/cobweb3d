@@ -1,5 +1,6 @@
 package cobweb3d.core.environment;
 
+import cobweb3d.impl.Simulation;
 import cobweb3d.core.SimulationInternals;
 import cobweb3d.core.Updatable;
 import cobweb3d.core.agent.BaseAgent;
@@ -33,16 +34,23 @@ public class BaseEnvironment implements Updatable {
      */
     protected byte[][][] flagArray; // TODO
 
+    /**
+     * foodArray is a 3d array where each entry is whether there is a food on the tile
+     */
+    public byte[][][] foodArray;
+
     public BaseEnvironment(SimulationInternals simulation) {
         this.simulation = simulation;
         this.agentTable = new ConcurrentHashMap<>();
         flagArray = new byte[0][0][0];
+        foodArray = new byte[0][0][0];
     }
 
     public synchronized void setParams(BaseEnvironmentParams envParams, boolean keepOldAgents) throws IllegalArgumentException {
         this.environmentParams = envParams;
         this.topology = new Topology(simulation, environmentParams.width, environmentParams.height, envParams.depth, false);
         this.flagArray = new byte[topology.width][topology.height][topology.depth];
+        this.foodArray = new byte[topology.width][topology.height][topology.depth];
     }
 
     private byte getLocationBits(Location l) {
@@ -134,6 +142,16 @@ public class BaseEnvironment implements Updatable {
     public synchronized void removeAgent(Location l) {
         BaseAgent a = getAgent(l);
         if (a != null) a.die();
+    }
+
+    public final void setFood(Location l, int foodType) {
+        if (1 <= foodType && foodType <= ((Simulation) simulation).getAgentTypeCount()) {
+            foodArray[l.x][l.y][l.z] = (byte) foodType;
+        }
+    }
+
+    public synchronized  void removeFood(Location l) {
+        foodArray[l.x][l.y][l.z] = 0;
     }
 
     protected void killOffgridAgents() {

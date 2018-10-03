@@ -7,6 +7,7 @@ import cobweb3d.plugins.exchange.ui.ExchangeConfigPage;
 import cobweb3d.plugins.food.ui.ConsumptionConfigPage;
 import cobweb3d.plugins.ported.disease.ui.DiseaseConfigPage;
 import cobweb3d.plugins.reproduction.ui.ReproductionConfigPage;
+import cobweb3d.plugins.resources.ui.ResourceConfigPage;
 import cobweb3d.plugins.transform.ui.TransformationConfigPage;
 import cobweb3d.ui.application.CobwebApplication;
 import cobweb3d.ui.exceptions.UserInputException;
@@ -208,6 +209,10 @@ public class SimulationConfigEditor implements ConfigRefresher {
                 Cobweb3Serializer.getChoiceCatalog(),
                 new TypeColorEnumeration(simConfig.agentParams.getPerTypeParams()));
         tabbedPane.addTab("Disease", diseaseConfigPage.getPanel());
+
+        ResourceConfigPage resourceConfigPage = new ResourceConfigPage(simConfig.resourceParams,
+                new ChoiceCatalog(), new TypeColorEnumeration(simConfig.agentParams.getPerTypeParams()));
+        tabbedPane.addTab("Resource", resourceConfigPage.getPanel());
 
 
     }
