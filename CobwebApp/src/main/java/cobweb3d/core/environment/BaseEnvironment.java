@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static java.lang.Math.abs;
+
 /**
  * The 3D environment where the simulation happens in.
  * It uses a hash table to link one location to one agent who stays in that location.
@@ -93,11 +95,19 @@ public class BaseEnvironment implements Updatable {
         }
     }
 
-    public List<SeeInfo> getObjectsInLocations(List<Location> seeableAreas) {
+    public List<SeeInfo> getObjectsInLocations(List<Location> seeableAreas, Location currentPosition) {
+        List<SeeInfo> result = new ArrayList<>();
         for (Location area: seeableAreas) {
-
+            if (hasAgent(area)) {
+                BaseAgent currentAgent = getAgent(area);
+                result.add(new SeeInfo(ObjectType.AGENT, currentAgent.getType(), area, computeDistance(currentAgent.getPosition(), currentPosition)));
+            }
         }
-        return null;
+        return result;
+    }
+
+    private int computeDistance(Location a, Location b) {
+        return abs(a.x - b.x) + abs(a.y - b.y) + abs(a.z - b.z);
     }
 
     public boolean isOccupied(Location l) {

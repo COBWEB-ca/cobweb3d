@@ -48,7 +48,7 @@ public class VisionMutator extends StatefulMutatorBase<VisionState, VisionParams
                 topology.getSeeableArea((LocationDirection)to, agentParams.frontEyesight, agentParams.backEyesight,
                agentParams.leftEyesight, agentParams.rightEyesight, agentParams.upEyesight, agentParams.downEyesight);
         BaseEnvironment environment = simulation.getEnvironment();
-        List<SeeInfo> seeableObjects = environment.getObjectsInLocations(seeableAreas);
+        List<SeeInfo> seeableObjects = environment.getObjectsInLocations(seeableAreas, to);
         setAgentState(agent, new VisionState(seeableObjects));
     }
 
