@@ -150,7 +150,7 @@ public class BaseEnvironment implements Updatable {
         }
     }
 
-    public synchronized  void removeFood(Location l) {
+    public synchronized void removeFood(Location l) {
         foodArray[l.x][l.y][l.z] = 0;
     }
 

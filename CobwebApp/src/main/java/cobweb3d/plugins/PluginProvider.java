@@ -1,10 +1,13 @@
 package cobweb3d.plugins;
 
+import cobweb3d.core.Updatable;
 import cobweb3d.impl.Simulation;
 import cobweb3d.impl.SimulationConfig;
+import cobweb3d.impl.environment.Environment;
 import cobweb3d.plugins.mutators.AgentMutator;
 import cobweb3d.plugins.mutators.ConfiguratedMutator;
 import cobweb3d.plugins.mutators.DataLoggingMutator;
+import cobweb3d.plugins.mutators.EnvironmentMutator;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Field;
@@ -45,6 +48,14 @@ public class PluginProvider {
         return orderedClasses;
     }
 
+    public static Set<Class<? extends EnvironmentMutator>> getEnvironmentPlugins() {
+        Reflections pluginsPackage = new Reflections("cobweb3d.plugins");
+        SortedSet<Class<? extends EnvironmentMutator>> orderedClasses = new TreeSet<>(new PluginOrderComparator());
+        orderedClasses.addAll(pluginsPackage
+                .getSubTypesOf(EnvironmentMutator.class).stream()
+                .filter(p -> !p.isInterface() && ConfiguratedMutator.class.isAssignableFrom(p) && !Modifier.isAbstract(p.getModifiers())).collect(Collectors.toList()));
+        return orderedClasses;
+    }
 
     public static void loadPluginConfigs(Simulation simulation, SimulationConfig simulationConfig) {
         for (AgentMutator agentMutator : simulation.mutatorListener.getAllMutators()) {
@@ -54,6 +65,22 @@ public class PluginProvider {
                     for (Field f : fields) {
                         if (((ConfiguratedMutator<?>) agentMutator).acceptsParam(f.getType())) {
                             ((ConfiguratedMutator) agentMutator).setParams(simulation, f.get(simulationConfig), simulationConfig.getAgentTypes());
+                            break;
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        for (EnvironmentMutator environmentMutator : ((Environment) simulation.getEnvironment()).plugins.values()) {
+            try {
+                if (ConfiguratedMutator.class.isAssignableFrom(environmentMutator.getClass())) {
+                    Field[] fields = simulationConfig.getClass().getDeclaredFields();
+                    for (Field f : fields) {
+                        if (((ConfiguratedMutator<?>) environmentMutator).acceptsParam(f.getType())) {
+                            ((ConfiguratedMutator) environmentMutator).setParams(simulation, f.get(simulationConfig), simulationConfig.getAgentTypes());
                             break;
                         }
                     }
@@ -77,6 +104,16 @@ public class PluginProvider {
             try {
                 AgentMutator mutator = plugin.newInstance();
                 simulation.mutatorListener.addMutator(mutator);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        Set<Class<? extends EnvironmentMutator>> envClasses = getEnvironmentPlugins();
+        for (Class<? extends EnvironmentMutator> plugin : envClasses) {
+            try {
+                EnvironmentMutator mutator = plugin.newInstance();
+                simulation.environment.addPlugin(mutator);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

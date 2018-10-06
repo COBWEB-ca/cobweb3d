@@ -24,7 +24,7 @@ public class Environment extends BaseEnvironment {
     // A list which comprises the information of different agents.
     public AgentParams[] agentParams;
     // the map "plugins" maps from the EnvironmentMutator class to the instance of that mutator.
-    private Map<Class<? extends EnvironmentMutator>, EnvironmentMutator> plugins = new LinkedHashMap<>();
+    public Map<Class<? extends EnvironmentMutator>, EnvironmentMutator> plugins = new LinkedHashMap<>();
 
     public Environment(SimulationInternals simulation) {
         super(simulation);
