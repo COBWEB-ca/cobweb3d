@@ -14,6 +14,7 @@ import cobweb3d.plugins.exchange.ExchangeParams;
 import cobweb3d.plugins.food.ConsumptionParams;
 import cobweb3d.plugins.ported.disease.DiseaseParams;
 import cobweb3d.plugins.reproduction.ReproductionParams;
+import cobweb3d.plugins.resources.ResourceParams;
 import cobweb3d.plugins.transform.TransformationParams;
 import cobweb3d.plugins.vision.VisionParams;
 import cobwebutil.io.ConfDisplayName;
@@ -60,6 +61,10 @@ public class SimulationConfig implements ParameterSerializable, AgentFoodCountab
     @ConfXMLTag("keepOldAgents")
     public boolean keepOldAgents = false;
 
+    @ConfDisplayName("Spawn new food")
+    @ConfXMLTag("spawnNewFood")
+    public boolean spawnNewFood = true;
+
     /**
      * Creates the default Cobweb simulation parameters.
      */
@@ -99,6 +104,8 @@ public class SimulationConfig implements ParameterSerializable, AgentFoodCountab
     public DiseaseParams diseaseParams = new DiseaseParams(this);
     @ConfXMLTag("Vision")
     public VisionParams visionParams = new VisionParams(this);
+    @ConfXMLTag("Resource")
+    public ResourceParams resourceParams = new ResourceParams(this);
 
 
 
