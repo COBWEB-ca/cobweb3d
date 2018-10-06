@@ -11,6 +11,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 /**
  * This class is like a manager class of class Direction, Location and LocationDirection.
  * It encapsulates all kinds of methods which takes Direction, Location and LocationDirection as inputs.
@@ -33,57 +36,120 @@ public class Topology {
 
     public List<Location> getSeeableArea(LocationDirection location, int frontEyesight, int backEyesight, int leftEyesight,
                                         int rightEyesight, int upEyesight, int downEyesight) {
-        Direction direction = location.direction;
-        int x = location.x + direction.x;
-        int y = location.y + direction.y;
-        int z = location.z + direction.z;
-        ArrayList<Location> result =  new ArrayList<>();
-        if (isValidLocation(x, y, z)) result.add(new Location(x, y, z));
-        return result;
-        /**
+        List<Location> seeableArea = new ArrayList<>();
         int upperBound, lowerBound, leftBound, rightBound, frontBound, backBound;
+        Location topLeftFront, topLeftBack, topRightFront, topRightBack, bottomLeftFront, bottomLeftBack, bottomRightFront, bottomRightBack;
         Direction direction = location.direction;
-        if (direction.y == 0) {
-            upperBound = location.y + upEyesight;
-            lowerBound = location.y - downEyesight;
-            while (upperBound > location.y && !isValidLocation(location.x, upperBound, location.z)) upperBound -= 1;
-            while (lowerBound < location.y && !isValidLocation(location.x, lowerBound, location.z)) lowerBound += 1;
+        if (direction.y == 0) { // faces to x or z
+            upperBound = location.y - upEyesight;
+            lowerBound = location.y + downEyesight;
             if (direction.z == 0) { // agent faces to x axis
                 if (direction.x == 1) { // faces to x positive
                     leftBound = location.z + leftEyesight;
                     rightBound = location.z - rightEyesight;
                     frontBound = location.x + frontEyesight;
                     backBound = location.x - frontEyesight;
-                    while (leftBound > location.z && !isValidLocation(location.x, location.y, leftBound)) leftBound -= 1;
-                    while (rightBound < location.z && !isValidLocation(location.x, location.y, rightBound)) rightBound += 1;
-                    while (frontBound > location.x && !isValidLocation(frontBound, location.y, location.z)) frontBound -= 1;
+                    topLeftFront = new Location(frontBound, upperBound, leftBound);
+                    topLeftBack = new Location(backBound, upperBound, leftBound);
+                    topRightFront = new Location(frontBound, upperBound,rightBound);
+                    topRightBack = new Location(backBound, upperBound, rightBound);
+                    bottomLeftFront = new Location(frontBound, lowerBound, leftBound);
+                    bottomLeftBack = new Location(backBound, lowerBound, leftBound);
+                    bottomRightFront = new Location(frontBound, lowerBound, rightBound);
+                    bottomRightBack = new Location(backBound, lowerBound, rightBound);
                 } else { // faces to x negative
                     leftBound = location.z - leftEyesight;
                     rightBound = location.z + rightEyesight;
-                    while (leftBound < location.z && !isValidLocation(location.x, location.y, leftBound)) leftBound += 1;
-                    while (rightBound > location.z && !isValidLocation(location.x, location.y, rightBound)) rightBound -= 1;
+                    frontBound = location.x - frontEyesight;
+                    backBound = location.x + frontEyesight;
+                    topLeftFront = new Location(frontBound, upperBound, leftBound);
+                    topLeftBack = new Location(backBound, upperBound, leftBound);
+                    topRightFront = new Location(frontBound, upperBound,rightBound);
+                    topRightBack = new Location(backBound, upperBound, rightBound);
+                    bottomLeftFront = new Location(frontBound, lowerBound, leftBound);
+                    bottomLeftBack = new Location(backBound, lowerBound, leftBound);
+                    bottomRightFront = new Location(frontBound, lowerBound, rightBound);
+                    bottomRightBack = new Location(backBound, lowerBound, rightBound);
                 }
             } else {
                 assert (direction.z == 1 || direction.z == -1); // faces to z axis
                 if (direction.z == 1) { // faces to z positive
                     leftBound = location.x - leftEyesight;
                     rightBound = location.x + rightEyesight;
-                    while (leftBound < location.x && !isValidLocation(leftBound, location.y, location.z)) leftBound += 1;
-                    while (rightBound > location.x && !isValidLocation(rightBound, location.y, location.z)) rightBound -= 1;
+                    frontBound = location.z + frontEyesight;
+                    backBound = location.z - backEyesight;
+                    topLeftFront = new Location(leftBound, upperBound, frontBound);
+                    topLeftBack = new Location(leftBound, upperBound, backBound);
+                    topRightFront = new Location(rightBound, upperBound, frontBound);
+                    topRightBack = new Location(rightBound, upperBound, backBound);
+                    bottomLeftFront = new Location(leftBound, lowerBound, frontBound);
+                    bottomLeftBack = new Location(leftBound, lowerBound, backBound);
+                    bottomRightFront = new Location(rightBound, lowerBound, frontBound);
+                    bottomRightBack = new Location(rightBound, lowerBound, backBound);
                 } else { // faces to z negative
                     leftBound = location.x + leftEyesight;
                     rightBound = location.x - rightEyesight;
-                    while (leftBound > location.x && !isValidLocation(leftBound, location.y, location.z)) leftBound -= 1;
-                    while (rightBound < location.x && !isValidLocation(rightBound, location.y, location.z)) rightBound += 1;
+                    frontBound = location.z - frontEyesight;
+                    backBound = location.z + backEyesight;
+                    topLeftFront = new Location(leftBound, upperBound, frontBound);
+                    topLeftBack = new Location(leftBound, upperBound, backBound);
+                    topRightFront = new Location(rightBound, upperBound, frontBound);
+                    topRightBack = new Location(rightBound, upperBound, backBound);
+                    bottomLeftFront = new Location(leftBound, lowerBound, frontBound);
+                    bottomLeftBack = new Location(leftBound, lowerBound, backBound);
+                    bottomRightFront = new Location(rightBound, lowerBound, frontBound);
+                    bottomRightBack = new Location(rightBound, lowerBound, backBound);
                 }
             }
-        } else if (direction.y == 1) {
-
+            for (int i = min(topLeftFront.x, topLeftBack.x); i <= max(topLeftFront.x, topLeftBack.x); i++) {
+                for (int j = min(topLeftFront.y, bottomLeftFront.y); j <= max(topLeftFront.y, bottomLeftFront.y); j++) {
+                    for (int k = min(topLeftFront.z, topRightFront.z); k <= max(topLeftFront.z, topRightFront.z); k++) {
+                        seeableArea.add(new Location(i, j, k));
+                    }
+                }
+            }
+        } else {
+            if (direction.y == -1) { // facing y negative
+                upperBound = location.z - upEyesight;
+                lowerBound = location.z + downEyesight;
+                leftBound = location.x - leftEyesight;
+                rightBound = location.x + rightEyesight;
+                frontBound = location.y - frontEyesight;
+                backBound = location.y + backEyesight;
+                topLeftFront = new Location(leftBound, frontBound, upperBound);
+                topLeftBack = new Location(leftBound, backBound, upperBound);
+                topRightFront = new Location(rightBound, frontBound, upperBound);
+                topRightBack = new Location(rightBound, backBound, upperBound);
+                bottomLeftFront = new Location(leftBound, frontBound, lowerBound);
+                bottomLeftBack = new Location(leftBound, backBound, lowerBound);
+                bottomRightFront = new Location(rightBound, frontBound, lowerBound);
+                bottomRightBack = new Location(rightBound, backBound, lowerBound);
+            } else { // facing y positive
+                assert (direction.y == 1);
+                upperBound = location.z + upEyesight;
+                lowerBound = location.z - downEyesight;
+                leftBound = location.x - leftEyesight;
+                rightBound = location.x + rightEyesight;
+                frontBound = location.y + frontEyesight;
+                backBound = location.y - backEyesight;
+                topLeftFront = new Location(leftBound, frontBound, upperBound);
+                topLeftBack = new Location(leftBound, backBound, upperBound);
+                topRightFront = new Location(rightBound, frontBound, upperBound);
+                topRightBack = new Location(rightBound, backBound, upperBound);
+                bottomLeftFront = new Location(leftBound, frontBound, lowerBound);
+                bottomLeftBack = new Location(leftBound, backBound, lowerBound);
+                bottomRightFront = new Location(rightBound, frontBound, lowerBound);
+                bottomRightBack = new Location(rightBound, backBound, lowerBound);
+            }
+            for (int i = min(topLeftFront.x, topRightFront.x); i <= max(topLeftFront.x, topRightFront.x); i++) {
+                for (int j = min(topLeftFront.y, topLeftBack.y); j <= max(topLeftFront.y, topLeftBack.y); j++) {
+                    for (int k = min(topLeftFront.z, bottomLeftFront.z); k <= max(topLeftFront.z, bottomLeftFront.z); k++) {
+                        seeableArea.add(new Location(i, j, k));
+                    }
+                }
+            }
         }
-
-        return null; // Placeholder
-         */
-
+        return seeableArea;
     }
     public Location getAdjacent(Location location, Direction direction) {
         return getAdjacent(new LocationDirection(location, direction));
@@ -189,12 +255,12 @@ public class Topology {
 
         if (!wrap) {
             int radInt = (int) Math.ceil(radius);
-            int x0 = Math.min(zero.x - radInt, 0);
-            int x1 = Math.max(zero.x + radInt, width - 1);
-            int y0 = Math.min(zero.y - radInt, 0);
-            int y1 = Math.max(zero.y + radInt, height - 1);
-            int z0 = Math.min(zero.z - radInt, 0);
-            int z1 = Math.max(zero.z + radInt, height - 1);
+            int x0 = min(zero.x - radInt, 0);
+            int x1 = max(zero.x + radInt, width - 1);
+            int y0 = min(zero.y - radInt, 0);
+            int y1 = max(zero.y + radInt, height - 1);
+            int z0 = min(zero.z - radInt, 0);
+            int z1 = max(zero.z + radInt, height - 1);
 
             for (int x = x0; x < x1; x++) {
                 for (int y = y0; y < y1; y++) {
@@ -207,7 +273,7 @@ public class Topology {
                 }
             }
         } else {
-            int maxRadius = Math.max(Math.max(width, height), depth);
+            int maxRadius = max(max(width, height), depth);
             if (radius > maxRadius) radius = maxRadius;
 
             result.add(zero);

@@ -42,6 +42,7 @@ public class VisionMutator extends StatefulMutatorBase<VisionState, VisionParams
 
     @Override
     public void onStep(BaseAgent agent, Location from, Location to) {
+        if (to == null) return;
         Topology topology = simulation.getTopology();
         VisionAgentParams agentParams = params.of(agent);
         List<Location> seeableAreas =
