@@ -4,7 +4,7 @@ import cobweb3d.core.params.AgentFoodCountable;
 import cobweb3d.core.params.PerAgentParams;
 
 public class VisionParams extends PerAgentParams<VisionAgentParams> {
-    private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 23L;
     private AgentFoodCountable size;
 
     public VisionParams(AgentFoodCountable size) {

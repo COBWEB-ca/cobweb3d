@@ -4,13 +4,18 @@ import cobweb3d.impl.Simulation;
 import cobweb3d.core.SimulationInternals;
 import cobweb3d.core.Updatable;
 import cobweb3d.core.agent.BaseAgent;
+import cobweb3d.core.location.Direction;
 import cobweb3d.core.location.Location;
+import cobweb3d.core.location.LocationDirection;
 import cobweb3d.core.params.BaseEnvironmentParams;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static java.lang.Math.abs;
 
 /**
  * The 3D environment where the simulation happens in.
@@ -100,18 +105,41 @@ public class BaseEnvironment implements Updatable {
         }
     }
 
+    public List<SeeInfo> getObjectsInLocations(List<Location> seeableAreas, Location currentPosition) {
+        List<SeeInfo> result = new ArrayList<>();
+        for (Location area: seeableAreas) {
+            if (hasAgent(area)) {
+                BaseAgent currentAgent = getAgent(area);
+                if (currentAgent.getPosition() != null && currentPosition != null) {
+                    result.add(new SeeInfo(ObjectType.AGENT, currentAgent.getType(), area, computeDistance(currentAgent.getPosition(), currentPosition)));
+                }
+            }
+        }
+        return result;
+    }
+
+    private int computeDistance(Location a, Location b) {
+        return abs(a.x - b.x) + abs(a.y - b.y) + abs(a.z - b.z);
+    }
+
     public boolean isOccupied(Location l) {
         return getLocationBits(l) != 0 || hasAgent(l);
     }
 
     public boolean hasAgent(Location l) {
         if (l == null) return false;
+
         if (agentTable != null && agentTable.containsKey(l)) {
             BaseAgent agent = agentTable.get(l);
             if (!agent.isAlive()) {
                 agentTable.remove(l);
                 return false;
             } else return true;
+        } else if (!(l instanceof LocationDirection)){
+            for (Direction d : Direction.XYZDirs) {
+                if (hasAgent(new LocationDirection(l, d))) return true;
+            }
+            return false;
         } else return false;
     }
 
@@ -123,7 +151,17 @@ public class BaseEnvironment implements Updatable {
     }
 
     public BaseAgent getAgent(Location l) {
-        return agentTable.get(l);
+        if (l instanceof LocationDirection) {
+            return agentTable.get(l);
+        } else {
+            for (Direction d : Direction.XYZDirs) {
+                BaseAgent result = getAgent(new LocationDirection(l, d));
+                if (result != null) {
+                    return result;
+                }
+            }
+            return null;
+        }
     }
 
     public Collection<BaseAgent> getAgents() {

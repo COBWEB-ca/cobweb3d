@@ -6,7 +6,9 @@ import cobweb3d.core.location.Location;
 public class SeeInfo {
     private final int distance;
 
-    private final int type;
+    private final ObjectType type;
+
+    private final int index;
 
     private final Location location;
 
@@ -18,11 +20,13 @@ public class SeeInfo {
      *  @param distance Distance to t.
      * @param type Type of object seen.
      * @param location the location of that object.
+     * @param index The index of object in the given type, E.g., if index = 1 and type = agent, then it represents agent 1.
      */
-    public SeeInfo(int distance, int type, Location location) {
+    public SeeInfo(ObjectType type, int index, Location location, int distance) {
         this.distance = distance;
         this.type = type;
         this.location = location;
+        this.index = index;
     }
 
     /**
@@ -35,7 +39,7 @@ public class SeeInfo {
     /**
      * @return What the agent sees (rock, food, etc.)
      */
-    public int getType() {
+    public ObjectType getType() {
         return type;
     }
 

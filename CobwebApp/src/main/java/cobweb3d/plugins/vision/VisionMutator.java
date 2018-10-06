@@ -3,17 +3,16 @@ package cobweb3d.plugins.vision;
 import cobweb3d.core.SimulationTimeSpace;
 import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.core.environment.BaseEnvironment;
+import cobweb3d.core.environment.SeeInfo;
 import cobweb3d.core.environment.Topology;
 import cobweb3d.core.location.Location;
 import cobweb3d.core.location.LocationDirection;
 import cobweb3d.plugins.mutators.StatefulMutatorBase;
 import cobweb3d.plugins.mutators.StepMutator;
-import cobweb3d.plugins.states.AgentState;
 
 import java.util.List;
 
-//public class VisionMutator extends StatefulMutatorBase<VisionState, VisionParams> implements StepMutator {
-public class VisionMutator extends StatefulMutatorBase<VisionState, VisionParams> {
+public class VisionMutator extends StatefulMutatorBase<VisionState, VisionParams> implements StepMutator {
     VisionParams params;
     private SimulationTimeSpace simulation;
 
@@ -40,15 +39,19 @@ public class VisionMutator extends StatefulMutatorBase<VisionState, VisionParams
     }
 
 
-    /**
+
     @Override
     public void onStep(BaseAgent agent, Location from, Location to) {
+        if (to == null) return;
         Topology topology = simulation.getTopology();
         VisionAgentParams agentParams = params.of(agent);
-        List<Location> seeableArea =
+        List<Location> seeableAreas =
                 topology.getSeeableArea((LocationDirection)to, agentParams.frontEyesight, agentParams.backEyesight,
-                agentParams.leftEyesight, agentParams.rightEyesight, agentParams.upEyesight, agentParams.downEyesight);
+               agentParams.leftEyesight, agentParams.rightEyesight, agentParams.upEyesight, agentParams.downEyesight);
+        BaseEnvironment environment = simulation.getEnvironment();
+        List<SeeInfo> seeableObjects = environment.getObjectsInLocations(seeableAreas, to);
+        setAgentState(agent, new VisionState(seeableObjects));
     }
-    */
+
 
 }
