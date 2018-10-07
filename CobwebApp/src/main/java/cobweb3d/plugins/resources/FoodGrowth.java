@@ -1,6 +1,7 @@
 package cobweb3d.plugins.resources;
 
 import cobweb3d.core.SimulationTimeSpace;
+import cobweb3d.core.location.Direction;
 import cobweb3d.core.location.Location;
 import cobweb3d.impl.Simulation;
 import cobweb3d.impl.environment.Environment;
@@ -15,9 +16,62 @@ public class FoodGrowth implements EnvironmentMutator, ConfiguratedMutator<Resou
 
     public ResourceParams params;
 
+    public Environment env;
+
     private SimulationTimeSpace simulation;
 
     public FoodGrowth() {
+    }
+
+    private void determineFoodGrowth() {
+
+    }
+
+    private void growFood() {
+        for (int x = 0; x < simulation.getTopology().width; x++ ) {
+            for (int y = 0; y < simulation.getTopology().height; y++) {
+                for (int z = 0; z < simulation.getTopology().depth; z++) {
+                    Location currentPos = new Location(x, y, z);
+                    if (!env.hasFood(currentPos)) {
+                        double foodCount = 0;
+                        int[] mostFood = new int[agentTypes + 1];
+
+                        for (Direction dir: Direction.XYZDirs) {
+                            Location checkPos = simulation.getTopology().getAdjacent(currentPos, dir);
+                            if (checkPos != null && env.hasFood(checkPos)) {
+                                foodCount++;
+                                mostFood[env.getFoodType(checkPos)]++;
+                            }
+                        }
+
+                        // If food is found, may want to grow food into this Location
+                        if (foodCount > 0) {
+                            int max = 0;
+                            int growingType;
+
+                            for (int i = 1; i < mostFood.length; ++i)
+                                if (mostFood[i] > mostFood[max])
+                                    max = i;
+
+                            if (params.agentParams[max-1].likeFoodGrowth >= simulation.getRandom().nextFloat()) {
+                                growingType = max;
+                            } else {
+                                growingType = simulation.getRandom().nextIntRange(1, agentTypes + 1);
+                                if (mostFood[growingType] == 0) continue;
+                            }
+
+                            // assert growingType > 0;
+
+                            ResourceAgentParams thisType = params.agentParams[growingType -1];
+                            float growRate = thisType.growRate;
+                            if (foodCount * growRate > 1000 * simulation.getRandom().nextFloat()) {
+                                env.setFood(currentPos, growingType);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private void dropFood(int type) {
@@ -29,17 +83,15 @@ public class FoodGrowth implements EnvironmentMutator, ConfiguratedMutator<Resou
             do {
                 ++j;
                 l = simulation.getTopology().getRandomLocation();
-            } while (j < MAX_ATTEMPTS && simulation.getEnvironment().isOccupied(l));
+            } while (j < MAX_ATTEMPTS && env.isOccupied(l));
 
             if (j < MAX_ATTEMPTS) {
-                simulation.getEnvironment().setFood(l, type);
+                env.setFood(l, type);
             }
         }
     }
 
     private void loadNewFood() {
-        Environment env = (Environment) simulation.getEnvironment();
-
         for (int i = 0; i < agentTypes; i++) {
             for (int j = 0; j < params.agentParams[i].initialFood; j++) {
                 Location l;
@@ -59,6 +111,18 @@ public class FoodGrowth implements EnvironmentMutator, ConfiguratedMutator<Resou
             // TODO: Drought days?
             dropFood(i);
         }
+
+        boolean shouldGrow = false;
+        for (ResourceAgentParams f : params.agentParams) {
+            if (f.growRate > 0) {
+                shouldGrow = true;
+                break;
+            }
+        }
+
+        if (shouldGrow) {
+            growFood();
+        }
     }
 
     public void loadNew() {
@@ -75,5 +139,6 @@ public class FoodGrowth implements EnvironmentMutator, ConfiguratedMutator<Resou
         this.simulation = sim;
         this.params = resourceParams;
         this.agentTypes = agentTypes;
+        this.env = (Environment) simulation.getEnvironment();
     }
 }
