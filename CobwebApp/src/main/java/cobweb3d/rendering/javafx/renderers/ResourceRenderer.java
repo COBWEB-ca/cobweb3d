@@ -33,6 +33,7 @@ public class ResourceRenderer extends Group {
     public ResourceRenderer() {
         this(true, true);
     }
+
     public ResourceRenderer(boolean toonShading, boolean outlineRendering) {
         super();
         setCache(false);
@@ -46,8 +47,8 @@ public class ResourceRenderer extends Group {
         pointLight.getScope().add(this);
         getChildren().addAll(ambientLight, pointLight);
 
-        if ((doToonShading = toonShading)) toonRenderer = new ToonRenderer();
-        if ((outlineRendering = outlineRendering)) outRenderer = new OutlineRenderer();
+        toonRenderer = new ToonRenderer();
+        outRenderer = new OutlineRenderer();
     }
 
     public void drawFood(byte[][][] foodArray) {
@@ -59,16 +60,13 @@ public class ResourceRenderer extends Group {
                 for (int j = 0; ; j++) {
                     if (j == 10) break;
                     for (int k = 0; k < foodArray[i][j].length; k++) {
-//                    System.out.println("i = " + i);
-//                    System.out.println("j = " + j);
-//                    System.out.println("k = " + k);
                         if (foodArray[i][j][k] > 0) {
                             int foodType = foodArray[i][j][k];
-                            sphere = new Sphere(0.2f);
+                            sphere = new Sphere(0.4f);
                             if (!typeMaterialMap.containsKey(foodType)) {
                                 PhongMaterial material = new PhongMaterial();
                                 if (!typeColorMap.containsKey(foodType)) {
-                                    Color color = Color.valueOf("000000");
+                                    Color color = Color.valueOf("F48942");
                                     typeColorMap.put(foodType, color);
                                     material.setDiffuseColor(color);
                                     material.setSpecularColor(color);

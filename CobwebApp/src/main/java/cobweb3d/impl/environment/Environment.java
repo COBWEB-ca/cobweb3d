@@ -1,6 +1,7 @@
 package cobweb3d.impl.environment;
 
 import cobweb3d.core.SimulationInternals;
+import cobweb3d.core.Updatable;
 import cobweb3d.core.agent.BaseAgent;
 import cobweb3d.core.environment.BaseEnvironment;
 import cobweb3d.core.location.Direction;
@@ -24,7 +25,7 @@ public class Environment extends BaseEnvironment {
     // A list which comprises the information of different agents.
     public AgentParams[] agentParams;
     // the map "plugins" maps from the EnvironmentMutator class to the instance of that mutator.
-    private Map<Class<? extends EnvironmentMutator>, EnvironmentMutator> plugins = new LinkedHashMap<>();
+    public Map<Class<? extends EnvironmentMutator>, EnvironmentMutator> plugins = new LinkedHashMap<>();
 
     public Environment(SimulationInternals simulation) {
         super(simulation);
@@ -63,11 +64,9 @@ public class Environment extends BaseEnvironment {
     public void update() {
         super.update();
 
-        /*
-        TODO: Plugins for environment?
         for (Updatable plugin : plugins.values()) {
             plugin.update();
-        }         */
+        }
     }
 
     public <T extends EnvironmentMutator> void addPlugin(T plugin) {

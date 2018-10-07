@@ -182,13 +182,21 @@ public class BaseEnvironment implements Updatable {
         if (a != null) a.die();
     }
 
+    public byte getFoodType(Location l) {
+        return foodArray[l.x][l.y][l.z];
+    }
+
+    public boolean hasFood(Location l) {
+        return foodArray[l.x][l.y][l.z] > 0;
+    }
+
     public final void setFood(Location l, int foodType) {
         if (1 <= foodType && foodType <= ((Simulation) simulation).getAgentTypeCount()) {
             foodArray[l.x][l.y][l.z] = (byte) foodType;
         }
     }
 
-    public synchronized  void removeFood(Location l) {
+    public synchronized void removeFood(Location l) {
         foodArray[l.x][l.y][l.z] = 0;
     }
 

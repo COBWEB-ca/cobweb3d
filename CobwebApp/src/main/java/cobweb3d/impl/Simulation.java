@@ -91,19 +91,20 @@ public class Simulation implements SimulationInternals, SimulationInterface {
         }
     }
 
-    public void loadNewFood() {
-        for (int i = 0; i < simulationConfig.resourceParams.agentParams.length; i++) {
-            for (int j = 0; j < simulationConfig.resourceParams.agentParams[i].initialFood; j++) {
-                Location l;
-                int tries = 0;
-                do l = getTopology().getRandomLocation();
-                while (tries++ < 100 && environment.foodArray[l.x][l.y][l.z] > 0);
-                if (tries < 100) {
-                    environment.foodArray[l.x][l.y][l.z] = ((byte) (i + 1));
-                }
-            }
-        }
-    }
+    // TODO: Determine if this belongs here
+//    public void loadNewFood() {
+//        for (int i = 0; i < simulationConfig.resourceParams.agentParams.length; i++) {
+//            for (int j = 0; j < simulationConfig.resourceParams.agentParams[i].initialFood; j++) {
+//                Location l;
+//                int tries = 0;
+//                do l = getTopology().getRandomLocation();
+//                while (tries++ < 100 && environment.foodArray[l.x][l.y][l.z] > 0);
+//                if (tries < 100) {
+//                    environment.foodArray[l.x][l.y][l.z] = ((byte) (i + 1));
+//                }
+//            }
+//        }
+//    }
 
     // TODO: Check
     private static final AtomicLong ticks = new AtomicLong();
@@ -132,7 +133,8 @@ public class Simulation implements SimulationInternals, SimulationInterface {
         mutatorListener.loadConfig(simulationConfig.mutatorConfig);
         simulationConfig.logConfig.load(mutatorListener);
         if (simConfig.spawnNewAgents) loadNewAgents();
-        if (simConfig.spawnNewFood) loadNewFood();
+        if (simConfig.spawnNewFood) environment.loadNew();
+//        if (simConfig.spawnNewFood) loadNewFood(); TODO: Belong here?
     }
 
     @Override
