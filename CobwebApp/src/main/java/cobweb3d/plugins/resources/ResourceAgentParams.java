@@ -26,11 +26,11 @@ public class ResourceAgentParams implements ParameterSerializable {
      * Rate at which food grows around existing food.
      * The chance food will grow at a specific cell, given there are N cells
      * with food touching this cell from top/bottom/left/right is:
-     * N * growRate / 100
+     * N * growRate / 1000
      */
     @ConfDisplayName("Growth Rate")
     @ConfXMLTag("FoodGrow")
-    public int growRate = 4;
+    public int growRate = 20;
 
     /**
      * In food growth, the probability that the most common food will be selected
@@ -47,7 +47,7 @@ public class ResourceAgentParams implements ParameterSerializable {
      */
     @ConfDisplayName("Depletion Rate")
     @ConfXMLTag("FoodDeplete")
-    public float depleteRate = 0.9f;
+    public float depleteRate = 0.6f;
 
     /**
      * Food will deplete every depleteTime time steps.

@@ -8,6 +8,10 @@ import cobweb3d.impl.environment.Environment;
 import cobweb3d.plugins.mutators.ConfiguratedMutator;
 import cobweb3d.plugins.mutators.EnvironmentMutator;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class FoodGrowth implements EnvironmentMutator, ConfiguratedMutator<ResourceParams> {
 
     private static int MAX_ATTEMPTS = 5;
@@ -23,8 +27,44 @@ public class FoodGrowth implements EnvironmentMutator, ConfiguratedMutator<Resou
     public FoodGrowth() {
     }
 
-    private void determineFoodGrowth() {
+    public void depleteFood() {
+        // for each agent type, we test to see if its deplete time step has
+        // come, and if so deplete the food random
+        // by the appropriate percentage
 
+        for (int type = 0; type < agentTypes; type++) {
+            ResourceAgentParams p = params.agentParams[type];
+
+            if (p.depleteRate != 0.0f &&
+                    p.growRate > 0 &&
+                    simulation.getTime() != 0 &&
+                    (simulation.getTime() % p.depleteTime) == 0) {
+                depleteFood(p, type + 1);
+            }
+        }
+    }
+
+    public void depleteFood(ResourceAgentParams p, int type) {
+        List<Location> locations = new ArrayList<>();
+        for (int x = 0; x < simulation.getTopology().width; ++x) {
+            for (int y = 0; y < simulation.getTopology().height; ++y) {
+                for (int z = 0; z < simulation.getTopology().depth; ++z) {
+                    Location currentPos = new Location(x, y, z);
+                    if (env.hasFood(currentPos) && env.getFoodType(currentPos) == type) {
+                        locations.add(currentPos);
+                    }
+                }
+            }
+        }
+
+        Collections.shuffle(locations, simulation.getRandom());
+
+        int foodToDeplete = (int) (locations.size() * p.depleteRate);
+
+        for (int j = 0; j < foodToDeplete; ++j) {
+            Location loc = locations.get(j);
+            env.removeFood(loc);
+        }
     }
 
     private void growFood() {
@@ -107,6 +147,8 @@ public class FoodGrowth implements EnvironmentMutator, ConfiguratedMutator<Resou
 
     @Override
     public void update() {
+        depleteFood();
+
         for (int i = 0; i < params.agentParams.length; i++) {
             // TODO: Drought days?
             dropFood(i);
