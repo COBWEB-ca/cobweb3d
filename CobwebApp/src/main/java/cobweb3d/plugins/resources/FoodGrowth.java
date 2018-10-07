@@ -53,6 +53,14 @@ public class FoodGrowth implements EnvironmentMutator, ConfiguratedMutator<Resou
         }
     }
 
+    @Override
+    public void update() {
+        for (int i = 0; i < params.agentParams.length; i++) {
+            // TODO: Drought days?
+            dropFood(i);
+        }
+    }
+
     public void loadNew() {
         loadNewFood();
     }

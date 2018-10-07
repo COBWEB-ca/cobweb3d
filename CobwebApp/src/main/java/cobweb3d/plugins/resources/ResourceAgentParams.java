@@ -20,7 +20,7 @@ public class ResourceAgentParams implements ParameterSerializable {
      */
     @ConfDisplayName("Spawn Rate")
     @ConfXMLTag("FoodRate")
-    public float dropRate = 0;
+    public float dropRate = 0.2f;
 
     /**
      * Rate at which food grows around existing food.
