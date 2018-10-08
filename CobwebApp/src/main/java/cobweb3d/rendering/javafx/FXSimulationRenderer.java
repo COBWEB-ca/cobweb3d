@@ -101,8 +101,11 @@ public class FXSimulationRenderer implements SimulationRenderer {
         if (rootGroup != null) {
             // TODO: FIX FUNCTIONALITY! POOR PERFORMANCE WITH THIS FIX.
             rootGroup.getChildren().remove(agentRenderer);
+            rootGroup.getChildren().remove(resourceRenderer);
             agentRenderer = new UncachedAgentRenderer(toonRendering, outlineRendering);
+            resourceRenderer = new ResourceRenderer(toonRendering, outlineRendering);
             rootGroup.getChildren().add(agentRenderer);
+            rootGroup.getChildren().add(resourceRenderer);
             if (simulation != null && simulation.environment != null) {
                 agentRenderer.drawAgents(simulation.environment.getAgents()); // TODO: Check concurrency.
                 resourceRenderer.drawFood(simulation.environment.foodArray);
