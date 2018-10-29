@@ -25,4 +25,19 @@ public class AbioticAgentParams implements ParameterSerializable {
         }
         factorParams = n;
     }
+
+    @Override
+    public AbioticAgentParams clone() {
+        try {
+            AbioticAgentParams copy = (AbioticAgentParams) super.clone();
+            copy.factorParams = new AgentFactorParams[this.factorParams.length];
+
+            for (int i = 0; i < copy.factorParams.length; i++) {
+                copy.factorParams[i] = this.factorParams[i].clone();
+            }
+            return copy;
+        } catch (CloneNotSupportedException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 }

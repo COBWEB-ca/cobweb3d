@@ -4,10 +4,12 @@ import cobweb3d.core.params.phenotype.NullPhenotype;
 import cobweb3d.core.params.phenotype.Phenotype;
 import cobweb3d.plugins.abiotic.preference.AbioticPreferenceParam;
 import cobwebutil.io.ConfDisplayName;
+import cobwebutil.io.ConfSquishParent;
 import cobwebutil.io.ConfXMLTag;
 
 public class AgentFactorParams {
     @ConfDisplayName("Preference")
+    @ConfSquishParent
     public AbioticPreferenceParam preference = new AbioticPreferenceParam();
 
     @ConfDisplayName("Parameter")
@@ -15,7 +17,7 @@ public class AgentFactorParams {
     public Phenotype parameter = new NullPhenotype();
 
     @Override
-    protected AgentFactorParams clone() {
+    public AgentFactorParams clone() {
         try {
             AgentFactorParams copy = (AgentFactorParams) super.clone();
             copy.preference = this.preference.clone();

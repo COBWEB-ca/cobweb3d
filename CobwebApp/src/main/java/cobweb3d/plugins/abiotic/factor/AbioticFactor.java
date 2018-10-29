@@ -4,7 +4,7 @@ import cobweb3d.core.SimulationTimeSpace;
 import cobwebutil.io.ParameterSerializable;
 
 public abstract class AbioticFactor implements ParameterSerializable {
-    public abstract float getValue(float x, float y);
+    public abstract float getValue(float x, float y, float z);
 
     public abstract float getMax();
     public abstract float getMin();
