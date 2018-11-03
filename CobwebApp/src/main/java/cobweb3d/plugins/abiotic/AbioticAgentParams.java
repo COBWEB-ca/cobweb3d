@@ -15,8 +15,6 @@ public class AbioticAgentParams implements ParameterSerializable {
     @ConfList(indexName = "Factor", startAtOne = true)
     public AgentFactorParams[] factorParams = new AgentFactorParams[0];
 
-    public AbioticAgentParams() {
-    }
 
     public void resizeFields(int fieldCount) {
         AgentFactorParams[] n = Arrays.copyOf(factorParams, fieldCount);

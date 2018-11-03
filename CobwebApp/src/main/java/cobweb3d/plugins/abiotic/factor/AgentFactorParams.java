@@ -6,8 +6,9 @@ import cobweb3d.plugins.abiotic.preference.AbioticPreferenceParam;
 import cobwebutil.io.ConfDisplayName;
 import cobwebutil.io.ConfSquishParent;
 import cobwebutil.io.ConfXMLTag;
+import cobwebutil.io.ParameterSerializable;
 
-public class AgentFactorParams {
+public class AgentFactorParams implements ParameterSerializable {
     @ConfDisplayName("Preference")
     @ConfSquishParent
     public AbioticPreferenceParam preference = new AbioticPreferenceParam();

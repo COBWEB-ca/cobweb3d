@@ -2,6 +2,8 @@ package cobweb3d.ui.swing.config;
 
 import cobweb3d.impl.SimulationConfig;
 import cobweb3d.io.Cobweb3Serializer;
+import cobweb3d.plugins.abiotic.ui.AbioticAgentConfigPage;
+import cobweb3d.plugins.abiotic.ui.AbioticFactorConfigPage;
 import cobweb3d.plugins.diminish.ui.DiminishConfigPage;
 import cobweb3d.plugins.exchange.ui.ExchangeConfigPage;
 import cobweb3d.plugins.food.ui.ConsumptionConfigPage;
@@ -220,6 +222,13 @@ public class SimulationConfigEditor implements ConfigRefresher {
         ResourceConfigPage resourceConfigPage = new ResourceConfigPage(simConfig.resourceParams,
                 new ChoiceCatalog(), new TypeColorEnumeration(simConfig.agentParams.getPerTypeParams()));
         tabbedPane.addTab("Resource", resourceConfigPage.getPanel());
+
+        AbioticFactorConfigPage abioticFactorConfigPage = new AbioticFactorConfigPage(simConfig.abioticParams, this);
+        tabbedPane.addTab("AbioticFactor", abioticFactorConfigPage.getPanel());
+
+        AbioticAgentConfigPage abioticAgentConfigPage = new AbioticAgentConfigPage(simConfig.abioticParams,
+                Cobweb3Serializer.getChoiceCatalog(), new TypeColorEnumeration(simConfig.agentParams.getPerTypeParams()));
+        tabbedPane.addTab("AbioticAgent", abioticAgentConfigPage.getPanel());
     }
 
     private void validateSettings() {

@@ -16,11 +16,12 @@ public class AbioticParams extends PerAgentParams<AbioticAgentParams> {
     @ConfXMLTag("Factors")
     @ConfList(indexName = "Factor", startAtOne = true)
     @ConfListType(AbioticFactor.class)
-    public List<AbioticFactor> factors = new ArrayList<>();
+    public List<AbioticFactor> factors;
 
 
     public AbioticParams(AgentFoodCountable size) {
         super(AbioticAgentParams.class);
+        factors = new ArrayList<>();
         resize(size);
     }
 
@@ -32,7 +33,6 @@ public class AbioticParams extends PerAgentParams<AbioticAgentParams> {
     @Override
     public void resize(AgentFoodCountable envParams) {
         super.resize(envParams);
-
         for (int i = 0; i < agentParams.length; i++) {
             agentParams[i].resizeFields(factors.size());
         }

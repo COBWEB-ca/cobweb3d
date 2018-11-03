@@ -40,4 +40,5 @@ public class AbioticState implements AgentState {
     public boolean isTransient() {
         return false;
     }
+    private static final long serialVersionUID = 1L;
 }
