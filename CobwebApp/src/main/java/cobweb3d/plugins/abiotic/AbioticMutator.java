@@ -110,7 +110,6 @@ public class AbioticMutator extends StatefulMutatorBase<AbioticState, AbioticPar
      * @param params abiotic parameters from the simulation configuration.
      */
     public void setParams(SimulationTimeSpace sim, AbioticParams params, int AgentType) {
-        System.out.println('a');
         this.params = params;
         this.sim = sim;
 
