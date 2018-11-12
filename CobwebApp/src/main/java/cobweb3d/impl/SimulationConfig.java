@@ -9,6 +9,7 @@ import cobweb3d.impl.ai.random.SimpleControllerParams;
 import cobweb3d.impl.logging.LogConfig;
 import cobweb3d.impl.params.BaseAgentParams;
 import cobweb3d.plugins.MutatorListenerConfig;
+import cobweb3d.plugins.abiotic.AbioticParams;
 import cobweb3d.plugins.diminish.DiminishParams;
 import cobweb3d.plugins.exchange.ExchangeParams;
 import cobweb3d.plugins.food.ConsumptionParams;
@@ -17,10 +18,7 @@ import cobweb3d.plugins.reproduction.ReproductionParams;
 import cobweb3d.plugins.resources.ResourceParams;
 import cobweb3d.plugins.transform.TransformationParams;
 import cobweb3d.plugins.vision.VisionParams;
-import cobwebutil.io.ConfDisplayName;
-import cobwebutil.io.ConfSaveInstanceClass;
-import cobwebutil.io.ConfXMLTag;
-import cobwebutil.io.ParameterSerializable;
+import cobwebutil.io.*;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -106,6 +104,8 @@ public class SimulationConfig implements ParameterSerializable, AgentFoodCountab
     public VisionParams visionParams = new VisionParams(this);
     @ConfXMLTag("Resource")
     public ResourceParams resourceParams = new ResourceParams(this);
+    @ConfXMLTag("Abiotic")
+    public AbioticParams abioticParams = new AbioticParams(this);
 
 
 
@@ -180,6 +180,7 @@ public class SimulationConfig implements ParameterSerializable, AgentFoodCountab
     public List<String> getPluginParameters() {
         List<String> result = new ArrayList<String>();
         // TODO: Add AI plugin state keys.
+        // result.addAll(this.abioticParams.getStatePluginKeys());
         return result;
     }
 }
