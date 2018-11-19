@@ -7,6 +7,7 @@ import cobweb3d.plugins.abiotic.AbioticParams;
 import cobweb3d.plugins.abiotic.factor.AbioticFactor;
 import cobweb3d.plugins.abiotic.factor.patterns.Bands;
 import cobweb3d.plugins.abiotic.factor.patterns.HorizontalBands;
+import cobweb3d.plugins.abiotic.factor.patterns.Island;
 import cobweb3d.plugins.abiotic.factor.patterns.VerticalBands;
 import cobweb3d.ui.swing.config.ConfigPage;
 import cobweb3d.ui.swing.config.ConfigRefresher;
@@ -38,7 +39,8 @@ public class AbioticFactorConfigPage implements ConfigPage {
 
     private static final List<AbioticFactor> PATTERNS = Arrays.asList(
             new HorizontalBands(),
-            new VerticalBands()
+            new VerticalBands(),
+            new Island()
     );
 
     private ConfigRefresher refresher;
