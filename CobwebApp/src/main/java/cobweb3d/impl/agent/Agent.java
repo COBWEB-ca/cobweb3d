@@ -30,6 +30,8 @@ public class Agent extends BaseAgent {
 
     private long birthTick;
 
+    public static String[] colors = new String[15];
+
     public Agent(SimulationInternals simulation, int type) {
         super(type);
         this.simulation = simulation;
@@ -38,6 +40,7 @@ public class Agent extends BaseAgent {
 
     public void setParams(AgentParams agentParams) {
         this.params = agentParams;
+        colors[getType() + 1] = params.color;
     }
 
     /**

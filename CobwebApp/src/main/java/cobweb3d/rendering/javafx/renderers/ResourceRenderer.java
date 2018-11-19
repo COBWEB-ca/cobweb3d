@@ -2,7 +2,7 @@ package cobweb3d.rendering.javafx.renderers;
 
 import cobweb3d.core.location.Direction;
 import cobweb3d.core.location.Location;
-import cobweb3d.rendering.javafx.mesh.PyramidMesh;
+import cobweb3d.impl.agent.Agent;
 import cobwebutil.MaterialColor;
 import cobwebutil.math.TransformUtil;
 import javafx.scene.AmbientLight;
@@ -66,7 +66,7 @@ public class ResourceRenderer extends Group {
                             if (!typeMaterialMap.containsKey(foodType)) {
                                 PhongMaterial material = new PhongMaterial();
                                 if (!typeColorMap.containsKey(foodType)) {
-                                    Color color = Color.valueOf("F48942");
+                                    Color color = Color.valueOf(Agent.colors[foodType]);
                                     typeColorMap.put(foodType, color);
                                     material.setDiffuseColor(color);
                                     material.setSpecularColor(color);

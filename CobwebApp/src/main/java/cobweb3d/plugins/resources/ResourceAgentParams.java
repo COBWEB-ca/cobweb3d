@@ -60,7 +60,11 @@ public class ResourceAgentParams implements ParameterSerializable {
      * How much the agent that prefers this food will gain in energy
      * upon eating the food
      */
-    @ConfDisplayName("Energy gain from food")
+    @ConfDisplayName("Energy gain from favourite food")
     @ConfXMLTag("EnergyGain")
     public int energyGain = 100;
+
+    @ConfDisplayName("Energy gain from other food")
+    @ConfXMLTag("OtherGain")
+    public int otherGain = 20;
 }
