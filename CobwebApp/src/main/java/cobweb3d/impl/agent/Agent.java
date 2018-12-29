@@ -11,6 +11,7 @@ import cobweb3d.impl.environment.Environment;
 import cobweb3d.impl.params.AgentParams;
 import cobweb3d.plugins.states.AgentState;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -266,6 +267,41 @@ public class Agent extends BaseAgent {
 
     private boolean canStep(Location dest) {
         return !environment.hasAgent(dest);
+    }
+
+    private Collection<BaseAgent> badAgentMemory;
+    public void rememberBadAgent(BaseAgent cheater) {
+        if (cheater.equals(this)) // heh
+            return;
+
+        // Moves cheater to the more recent end of memory
+        badAgentMemory.remove(cheater);
+        badAgentMemory.add(cheater);
+    }
+
+    public void broadcast(BroadcastPacket packet, BroadcastCause cause) {
+        //TODO move to plugin?
+        environment.getPlugin(PacketConduit.class).addPacketToList(packet);
+
+        changeEnergy(-params.broadcastEnergyCost.getValue(), cause);
+    }
+    public boolean isAgentGood(Agent other) {
+        if (!badAgentMemory.contains(other))
+            return true;
+
+        // Refresh memory
+        rememberBadAgent(other);
+        return false;
+    }
+
+    public static class BroadcastCause implements Cause {
+        @Override
+        public String getName() { return "Broadcast"; }
+    }
+
+    public static class BroadcastFoodCause extends BroadcastCause {
+        @Override
+        public String getName() { return "Broadcast Food"; }
     }
 
     public static class MovementCause implements Cause {

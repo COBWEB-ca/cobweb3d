@@ -2,6 +2,11 @@ package cobweb3d.plugins.personality;
 
 import cobweb3d.core.SimulationInternals;
 import cobweb3d.core.agent.BaseAgent;
+import cobweb3d.core.environment.Topology;
+import cobweb3d.core.location.Direction;
+import cobweb3d.core.location.LocationDirection;
+import cobweb3d.impl.Simulation;
+import cobweb3d.impl.agent.Agent;
 import cobweb3d.plugins.mutators.ContactMutator;
 import cobweb3d.plugins.mutators.MoveMutator;
 import cobweb3d.plugins.mutators.StatefulMutatorBase;
@@ -20,7 +25,7 @@ public class PersonalityMutator extends StatefulMutatorBase<PersonalityState, Pe
     public boolean overrideMove(BaseAgent ag) {
 
         Simulation simulation = (Simulation) sim;
-        ComplexAgent agent = (Agent) ag;
+        Agent agent = (Agent) ag;
 
         PersonalityState state = agent.getState(PersonalityState.class);
         if (state == null) {
@@ -43,7 +48,7 @@ public class PersonalityMutator extends StatefulMutatorBase<PersonalityState, Pe
         }
 
         // Now find the closest agent
-        Agent closest = simulation.theEnvironment.getClosestAgent(agent);
+        Agent closest = simulation.environment.getClosestAgent(agent);
         LocationDirection l2 = closest.getPosition();
         LocationDirection l1 = agent.getPosition();
         if (simulation.getTopology().getDistance(l1, l2) < 2) {
@@ -115,12 +120,12 @@ public class PersonalityMutator extends StatefulMutatorBase<PersonalityState, Pe
     }
 
     @Override
-    public void onContact(Agent bumper, Agent bumpee) {
-        ComplexAgent me = (ComplexAgent) bumper;
+    public void onContact(BaseAgent bumper, BaseAgent bumpee) {
+        Agent me = (Agent) bumper;
         if (!hasAgentState(me))
             return;
 
-        ComplexAgent other = (ComplexAgent) bumpee;
+        Agent other = (Agent) bumpee;
         if (!hasAgentState(other))
             return;
 
@@ -164,7 +169,7 @@ public class PersonalityMutator extends StatefulMutatorBase<PersonalityState, Pe
         return true; // Because other needs to play PD
     }
 
-    public void playPDonStep(ComplexAgent me, Agent adjacentAgent) {
+    public void playPDonStep(Agent me, BaseAgent adjacentAgent) {
         PersonalityState meState = getAgentState(me);
         PersonalityState otherState = getAgentState(adjacentAgent);
 
@@ -205,7 +210,7 @@ public class PersonalityMutator extends StatefulMutatorBase<PersonalityState, Pe
             iveBeenCheated(me, adjacentAgent);
     }
 
-    private static void iveBeenCheated(ComplexAgent me, Agent cheater) {
+    private static void iveBeenCheated(Agent me, BaseAgent cheater) {
         me.rememberBadAgent(cheater);
         me.broadcast(new CheaterBroadcast(cheater, me), new PDMutator.BroadcastCheaterCause());
     }
