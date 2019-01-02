@@ -9,6 +9,8 @@ import cobweb3d.core.location.Location;
 import cobweb3d.core.location.LocationDirection;
 import cobweb3d.impl.environment.Environment;
 import cobweb3d.impl.params.AgentParams;
+import cobweb3d.plugins.broadcast.BroadcastPacket;
+import cobweb3d.plugins.broadcast.PacketConduit;
 import cobweb3d.plugins.states.AgentState;
 
 import java.util.Collection;
@@ -25,13 +27,17 @@ public class Agent extends BaseAgent {
     public Map<Class<? extends AgentState>, AgentState> extraState = new HashMap<>();
 
     protected transient SimulationInternals simulation;
-    protected transient Environment environment;
+    public transient Environment environment;
 
     private Controller controller;
 
     private long birthTick;
 
     public static String[] colors = new String[15];
+
+    private double commInbox;
+    private double commOutbox;
+    private boolean shouldReproduceAsex;
 
     public Agent(SimulationInternals simulation, int type) {
         super(type);
@@ -110,7 +116,9 @@ public class Agent extends BaseAgent {
             die();
             return;
         }
-        if (controller != null) controller.controlAgent(this, simulation.getAgentListener());
+        if (!simulation.getAgentListener().onNextMove(this) && controller != null) {
+            controller.controlAgent(this, simulation.getAgentListener());
+        }
     }
 
     /**
@@ -292,6 +300,33 @@ public class Agent extends BaseAgent {
         // Refresh memory
         rememberBadAgent(other);
         return false;
+    }
+
+    protected void receiveBroadcast() {
+        BroadcastPacket commPacket = environment.getPlugin(PacketConduit.class).findPacket(getPosition(), this);
+
+        if (commPacket == null)
+            return;
+
+        if (isAgentGood(commPacket.sender)) {
+            commPacket.process(this);
+        }
+    }
+
+    public void setShouldReproduceAsex(boolean asexFlag) {
+        this.shouldReproduceAsex = asexFlag;
+    }
+
+    public void setCommInbox(double commInbox) {
+        this.commInbox = commInbox;
+    }
+
+    protected void clearCommInbox() {
+        commInbox = 0;
+    }
+
+    public void setCommOutbox(double commOutbox) {
+        this.commOutbox = commOutbox;
     }
 
     public static class BroadcastCause implements Cause {

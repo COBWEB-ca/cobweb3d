@@ -2,6 +2,7 @@ package cobweb3d.plugins.pd;
 
 import cobweb3d.core.SimulationInternals;
 import cobweb3d.core.agent.BaseAgent;
+import cobweb3d.core.entity.Cause;
 import cobweb3d.impl.agent.Agent;
 import cobweb3d.plugins.mutators.ContactMutator;
 import cobweb3d.plugins.mutators.StatefulSpawnMutatorBase;
@@ -204,7 +205,7 @@ public class PDMutator extends StatefulSpawnMutatorBase<PDState> implements Cont
         public String getName() { return "PD Punishment"; }
     }
 
-    public static class BroadcastCheaterCause extends BroadcastCause {
+    public static class BroadcastCheaterCause extends Agent.BroadcastCause {
         @Override
         public String getName() { return "Broadcast Cheating"; }
     }

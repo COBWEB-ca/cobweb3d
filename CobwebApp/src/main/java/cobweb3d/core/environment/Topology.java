@@ -515,4 +515,8 @@ public class Topology {
     public Direction getRandomXZDir() {
         return Direction.XZDirs[randomSource.getRandom().nextInt(Direction.XZDirs.length)];
     }
+
+    public double getDistance(Location l1, Location l2) {
+        return Math.sqrt((l1.x-l2.x)*(l1.x-l2.x) + (l1.y-l2.y)*(l1.y-l2.y) + (l1.z-l2.z)*(l1.z-l2.z));
+    }
 }

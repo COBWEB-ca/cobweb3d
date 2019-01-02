@@ -27,6 +27,8 @@ public class MutatorListener implements AgentListener {
     private Set<DataLoggingMutator> dataLoggingMutators = new LinkedHashSet<>();
     private Set<ConsumptionMutator> consumptionMutators = new LinkedHashSet<>();
     private Set<ControllerInputMutator> controllerMutators = new LinkedHashSet<>();
+    private Set<MoveMutator> moveMutators = new LinkedHashSet<>();
+
     // allMutators keeps track of all mutators that ever existed during the simulation.
     private Set<AgentMutator> allMutators = new HashSet<>();
 
@@ -75,7 +77,8 @@ public class MutatorListener implements AgentListener {
         if (mutator instanceof ControllerInputMutator)
             controllerMutators.add((ControllerInputMutator) mutator);
 
-
+        if (mutator instanceof MoveMutator)
+            moveMutators.add((MoveMutator) mutator);
         allMutators.add(mutator);
     }
 
@@ -93,6 +96,7 @@ public class MutatorListener implements AgentListener {
         dataLoggingMutators.remove(mutator);
         consumptionMutators.remove(mutator);
         controllerMutators.remove(mutator);
+        moveMutators.remove(mutator);
 
         allMutators.remove(mutator);
     }
@@ -109,6 +113,7 @@ public class MutatorListener implements AgentListener {
         dataLoggingMutators.clear();
         consumptionMutators.clear();
         controllerMutators.clear();
+        moveMutators.clear();
 
         allMutators.clear();
     }
@@ -200,6 +205,16 @@ public class MutatorListener implements AgentListener {
         for (UpdateMutator mutator : updateMutators) {
             mutator.onUpdate(agent);
         }
+    }
+
+    @Override
+    public boolean onNextMove(BaseAgent agent) {
+        for (MoveMutator mut : moveMutators) {
+            if (mut.overrideMove(agent)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

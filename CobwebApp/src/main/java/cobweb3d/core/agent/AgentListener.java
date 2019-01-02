@@ -35,4 +35,6 @@ public interface AgentListener extends ControllerListener {
     void onEnergyChange(BaseAgent agent, int delta, Cause cause);
 
     void onUpdate(BaseAgent agent);
+
+    boolean onNextMove(BaseAgent agent);
 }

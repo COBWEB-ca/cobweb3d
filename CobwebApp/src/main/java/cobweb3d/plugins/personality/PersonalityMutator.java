@@ -7,16 +7,18 @@ import cobweb3d.core.location.Direction;
 import cobweb3d.core.location.LocationDirection;
 import cobweb3d.impl.Simulation;
 import cobweb3d.impl.agent.Agent;
+import cobweb3d.plugins.broadcast.CheaterBroadcast;
 import cobweb3d.plugins.mutators.ContactMutator;
 import cobweb3d.plugins.mutators.MoveMutator;
-import cobweb3d.plugins.mutators.StatefulMutatorBase;
+import cobweb3d.plugins.mutators.StatefulSpawnMutatorBase;
+import cobweb3d.plugins.pd.PDMutator;
 
 /*
  * So the mutator only controls the PD portion.
  * The swarm-esque part will be just an override of the controller's choice of input. But a method here
  * will be used to determine the location of the closest few agents and move in that direction.
  */
-public class PersonalityMutator extends StatefulMutatorBase<PersonalityState, PersonalityParams> implements ContactMutator, MoveMutator {
+public class PersonalityMutator extends StatefulSpawnMutatorBase<PersonalityState, PersonalityParams> implements ContactMutator, MoveMutator {
     SimulationInternals sim;
     PersonalityParams params;
 
@@ -51,7 +53,7 @@ public class PersonalityMutator extends StatefulMutatorBase<PersonalityState, Pe
         Agent closest = simulation.environment.getClosestAgent(agent);
         LocationDirection l2 = closest.getPosition();
         LocationDirection l1 = agent.getPosition();
-        if (simulation.getTopology().getDistance(l1, l2) < 2) {
+        if (simulation.getTopology().getDistance(l1, l2) < 1.5) {
             agent.step();
         } else  {
             // If the direction of the agent is not facing the closest agent, make it turn
@@ -187,23 +189,23 @@ public class PersonalityMutator extends StatefulMutatorBase<PersonalityState, Pe
 
         if (!meState.pdCheater && !otherState.pdCheater) {
             /* Both cooperate */
-            me.changeEnergy(+params.reward, new PDRewardCause());
-            adjacentAgent.changeEnergy(+params.reward, new PDRewardCause());
+            me.changeEnergy(+params.reward, new PDMutator.PDRewardCause());
+            adjacentAgent.changeEnergy(+params.reward, new PDMutator.PDRewardCause());
 
         } else if (!meState.pdCheater && otherState.pdCheater) {
             /* Only other agent cheats */
-            me.changeEnergy(+params.sucker, new PDSuckerCause());
-            adjacentAgent.changeEnergy(+params.temptation, new PDTemptationCause());
+            me.changeEnergy(+params.sucker, new PDMutator.PDSuckerCause());
+            adjacentAgent.changeEnergy(+params.temptation, new PDMutator.PDTemptationCause());
 
         } else if (meState.pdCheater && !otherState.pdCheater) {
             /* Only this agent cheats */
-            me.changeEnergy(+params.temptation, new PDTemptationCause());
-            adjacentAgent.changeEnergy(+params.sucker, new PDSuckerCause());
+            me.changeEnergy(+params.temptation, new PDMutator.PDTemptationCause());
+            adjacentAgent.changeEnergy(+params.sucker, new PDMutator.PDSuckerCause());
 
         } else if (meState.pdCheater && otherState.pdCheater) {
             /* Both cheat */
-            me.changeEnergy(+params.punishment, new PDPunishmentCause());
-            adjacentAgent.changeEnergy(+params.punishment, new PDPunishmentCause());
+            me.changeEnergy(+params.punishment, new PDMutator.PDPunishmentCause());
+            adjacentAgent.changeEnergy(+params.punishment, new PDMutator.PDPunishmentCause());
         }
 
         if (otherState.pdCheater)
@@ -214,6 +216,7 @@ public class PersonalityMutator extends StatefulMutatorBase<PersonalityState, Pe
         me.rememberBadAgent(cheater);
         me.broadcast(new CheaterBroadcast(cheater, me), new PDMutator.BroadcastCheaterCause());
     }
+
 
     @Override
     protected boolean validState(PersonalityState state) {
