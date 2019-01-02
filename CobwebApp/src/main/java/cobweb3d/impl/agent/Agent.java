@@ -9,8 +9,13 @@ import cobweb3d.core.location.Location;
 import cobweb3d.core.location.LocationDirection;
 import cobweb3d.impl.environment.Environment;
 import cobweb3d.impl.params.AgentParams;
+import cobweb3d.plugins.broadcast.BroadcastPacket;
+import cobweb3d.plugins.broadcast.PacketConduit;
 import cobweb3d.plugins.states.AgentState;
+import org.reflections.vfs.Vfs;
 
+import java.util.ArrayDeque;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,13 +29,18 @@ public class Agent extends BaseAgent {
     public Map<Class<? extends AgentState>, AgentState> extraState = new HashMap<>();
 
     protected transient SimulationInternals simulation;
-    protected transient Environment environment;
+    public transient Environment environment;
 
     private Controller controller;
 
     private long birthTick;
 
     public static String[] colors = new String[15];
+
+    private double commInbox;
+    private double commOutbox;
+    private boolean shouldReproduceAsex;
+    private Collection<BaseAgent> badAgentMemory;
 
     public Agent(SimulationInternals simulation, int type) {
         super(type);
@@ -41,6 +51,7 @@ public class Agent extends BaseAgent {
     public void setParams(AgentParams agentParams) {
         this.params = agentParams;
         colors[getType() + 1] = params.color;
+        badAgentMemory = new ArrayDeque<>();
     }
 
     /**
@@ -109,7 +120,9 @@ public class Agent extends BaseAgent {
             die();
             return;
         }
-        if (controller != null) controller.controlAgent(this, simulation.getAgentListener());
+        if (!simulation.getAgentListener().onNextMove(this) && controller != null) {
+            controller.controlAgent(this, simulation.getAgentListener());
+        }
     }
 
     /**
@@ -195,7 +208,24 @@ public class Agent extends BaseAgent {
         simulation.getAgentListener().onStep(this, oldPos, newPos);
         position = newPos;
     }
-
+    public void turnAbsoluteLeft() {
+        position.direction = Direction.xNeg;
+    }
+    public void turnAbsoluteRight() {
+        position.direction = Direction.xPos;
+    }
+    public void turnAbsoluteUp() {
+        position.direction = Direction.yNeg;
+    }
+    public void turnAbsoluteDown() {
+        position.direction = Direction.yPos;
+    }
+    public void turnAbsoluteIn() {
+        position.direction = Direction.zPos;
+    }
+    public void turnAbsoluteOut() {
+        position.direction = Direction.zNeg;
+    }
     public void turnLeft() {
         position = environment.topology.getTurnLeftPosition(getPosition());//environment.topology.getTurnLeftPosition(getPosition());
     }
@@ -266,6 +296,68 @@ public class Agent extends BaseAgent {
 
     private boolean canStep(Location dest) {
         return !environment.hasAgent(dest);
+    }
+
+
+    public void rememberBadAgent(BaseAgent cheater) {
+        if (cheater.equals(this)) // heh
+            return;
+
+        // Moves cheater to the more recent end of memory
+        badAgentMemory.remove(cheater);
+        badAgentMemory.add(cheater);
+    }
+
+    public void broadcast(BroadcastPacket packet, BroadcastCause cause) {
+        //TODO move to plugin?
+        environment.getPlugin(PacketConduit.class).addPacketToList(packet);
+
+        changeEnergy(-params.broadcastEnergyCost.getValue(), cause);
+    }
+    public boolean isAgentGood(Agent other) {
+        if (!badAgentMemory.contains(other))
+            return true;
+
+        // Refresh memory
+        rememberBadAgent(other);
+        return false;
+    }
+
+    protected void receiveBroadcast() {
+        BroadcastPacket commPacket = environment.getPlugin(PacketConduit.class).findPacket(getPosition(), this);
+
+        if (commPacket == null)
+            return;
+
+        if (isAgentGood(commPacket.sender)) {
+            commPacket.process(this);
+        }
+    }
+
+    public void setShouldReproduceAsex(boolean asexFlag) {
+        this.shouldReproduceAsex = asexFlag;
+    }
+
+    public void setCommInbox(double commInbox) {
+        this.commInbox = commInbox;
+    }
+
+    protected void clearCommInbox() {
+        commInbox = 0;
+    }
+
+    public void setCommOutbox(double commOutbox) {
+        this.commOutbox = commOutbox;
+    }
+
+    public static class BroadcastCause implements Cause {
+        @Override
+        public String getName() { return "Broadcast"; }
+    }
+
+    public static class BroadcastFoodCause extends BroadcastCause {
+        @Override
+        public String getName() { return "Broadcast Food"; }
     }
 
     public static class MovementCause implements Cause {

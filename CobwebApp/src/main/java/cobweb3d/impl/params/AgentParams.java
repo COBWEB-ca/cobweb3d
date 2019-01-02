@@ -2,6 +2,7 @@ package cobweb3d.impl.params;
 
 import cobweb3d.core.params.AgentFoodCountable;
 import cobweb3d.core.params.ResizableParam;
+import cobwebutil.MutatableFloat;
 import cobwebutil.MutatableInt;
 import cobwebutil.io.CloneHelper;
 import cobwebutil.io.ConfDisplayName;
@@ -58,6 +59,47 @@ public class AgentParams implements ResizableParam {
     @ConfDisplayName("Age limit")
     @ConfXMLTag("agingLimit")
     public MutatableInt agingLimit = new MutatableInt(300);
+
+    /**
+     * Enables message broadcasts.
+     */
+    @ConfDisplayName("Broadcast")
+    @ConfXMLTag("broadcastMode")
+    public boolean broadcastMode = false;
+
+    /**
+     * Makes broadcast radius depend on agent energy.
+     * Formula is: radius = energy / 10 + 1.
+     */
+    @ConfDisplayName("Broadcast energy-based")
+    @ConfXMLTag("broadcastEnergyBased")
+    public boolean broadcastEnergyBased = false;
+
+    /**
+     * Radius of broadcast area.
+     */
+    @ConfDisplayName("Broadcast fixed range")
+    @ConfXMLTag("broadcastFixedRange")
+    public MutatableInt broadcastFixedRange = new MutatableInt(20);
+
+    /**
+     * Minimum agent energy to broadcast.
+     */
+    @ConfDisplayName("Broadcast minimum energy")
+    @ConfXMLTag("broadcastEnergyMin")
+    public MutatableInt broadcastEnergyMin = new MutatableInt(20);
+
+    /**
+     * Energy used up by broadcasting.
+     */
+    @ConfDisplayName("Broadcast cost")
+    @ConfXMLTag("broadcastEnergyCost")
+    public MutatableInt broadcastEnergyCost = new MutatableInt(5);
+
+    @ConfDisplayName("Broadcast heard only by same type")
+    @ConfXMLTag("broadcastSameTypeOnly")
+    public boolean broadcastSameTypeOnly = false;
+
 
     public AgentParams() {
 

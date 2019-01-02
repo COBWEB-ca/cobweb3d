@@ -121,4 +121,15 @@ public class Environment extends BaseEnvironment {
         }
         return result;
     }
+
+    public Agent getClosestAgent(Agent agent) {
+        Location l1 = agent.getPosition();
+        Agent closest = null;
+        double closestDistance = Math.sqrt(topology.width * topology.width + topology.height * topology.height); // Can't be farther than this
+        for (Map.Entry<Location, BaseAgent> pair : agentTable.entrySet()) {
+            if (topology.getDistance(pair.getKey(), l1) < closestDistance)
+                closest = (Agent) pair.getValue();
+        }
+        return closest;
+    }
 }
