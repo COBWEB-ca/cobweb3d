@@ -12,7 +12,9 @@ import cobweb3d.impl.params.AgentParams;
 import cobweb3d.plugins.broadcast.BroadcastPacket;
 import cobweb3d.plugins.broadcast.PacketConduit;
 import cobweb3d.plugins.states.AgentState;
+import org.reflections.vfs.Vfs;
 
+import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +40,7 @@ public class Agent extends BaseAgent {
     private double commInbox;
     private double commOutbox;
     private boolean shouldReproduceAsex;
+    private Collection<BaseAgent> badAgentMemory;
 
     public Agent(SimulationInternals simulation, int type) {
         super(type);
@@ -48,6 +51,7 @@ public class Agent extends BaseAgent {
     public void setParams(AgentParams agentParams) {
         this.params = agentParams;
         colors[getType() + 1] = params.color;
+        badAgentMemory = new ArrayDeque<>();
     }
 
     /**
@@ -204,7 +208,24 @@ public class Agent extends BaseAgent {
         simulation.getAgentListener().onStep(this, oldPos, newPos);
         position = newPos;
     }
-
+    public void turnAbsoluteLeft() {
+        position.direction = Direction.xNeg;
+    }
+    public void turnAbsoluteRight() {
+        position.direction = Direction.xPos;
+    }
+    public void turnAbsoluteUp() {
+        position.direction = Direction.yNeg;
+    }
+    public void turnAbsoluteDown() {
+        position.direction = Direction.yPos;
+    }
+    public void turnAbsoluteIn() {
+        position.direction = Direction.zPos;
+    }
+    public void turnAbsoluteOut() {
+        position.direction = Direction.zNeg;
+    }
     public void turnLeft() {
         position = environment.topology.getTurnLeftPosition(getPosition());//environment.topology.getTurnLeftPosition(getPosition());
     }
@@ -277,7 +298,7 @@ public class Agent extends BaseAgent {
         return !environment.hasAgent(dest);
     }
 
-    private Collection<BaseAgent> badAgentMemory;
+
     public void rememberBadAgent(BaseAgent cheater) {
         if (cheater.equals(this)) // heh
             return;

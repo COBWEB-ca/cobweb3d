@@ -7,6 +7,7 @@ import cobweb3d.plugins.abiotic.ui.AbioticFactorConfigPage;
 import cobweb3d.plugins.diminish.ui.DiminishConfigPage;
 import cobweb3d.plugins.exchange.ui.ExchangeConfigPage;
 import cobweb3d.plugins.food.ui.ConsumptionConfigPage;
+import cobweb3d.plugins.personality.ui.PersonalityConfigPage;
 import cobweb3d.plugins.ported.disease.ui.DiseaseConfigPage;
 import cobweb3d.plugins.reproduction.ui.ReproductionConfigPage;
 import cobweb3d.plugins.resources.ui.ResourceConfigPage;
@@ -229,6 +230,9 @@ public class SimulationConfigEditor implements ConfigRefresher {
         AbioticAgentConfigPage abioticAgentConfigPage = new AbioticAgentConfigPage(simConfig.abioticParams,
                 Cobweb3Serializer.getChoiceCatalog(), new TypeColorEnumeration(simConfig.agentParams.getPerTypeParams()));
         tabbedPane.addTab("AbioticAgent", abioticAgentConfigPage.getPanel());
+
+        PersonalityConfigPage personalityConfigPage = new PersonalityConfigPage(simConfig.personalityParams, new TypeColorEnumeration(simConfig.agentParams.getPerTypeParams()));
+        tabbedPane.addTab("Personality", personalityConfigPage.getPanel());
     }
 
     private void validateSettings() {

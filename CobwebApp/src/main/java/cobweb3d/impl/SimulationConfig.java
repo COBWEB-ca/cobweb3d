@@ -13,6 +13,7 @@ import cobweb3d.plugins.abiotic.AbioticParams;
 import cobweb3d.plugins.diminish.DiminishParams;
 import cobweb3d.plugins.exchange.ExchangeParams;
 import cobweb3d.plugins.food.ConsumptionParams;
+import cobweb3d.plugins.personality.PersonalityParams;
 import cobweb3d.plugins.ported.disease.DiseaseParams;
 import cobweb3d.plugins.reproduction.ReproductionParams;
 import cobweb3d.plugins.resources.ResourceParams;
@@ -106,6 +107,8 @@ public class SimulationConfig implements ParameterSerializable, AgentFoodCountab
     public ResourceParams resourceParams = new ResourceParams(this);
     @ConfXMLTag("Abiotic")
     public AbioticParams abioticParams = new AbioticParams(this);
+    @ConfXMLTag("Personality")
+    public PersonalityParams personalityParams = new PersonalityParams(this);
 
 
 

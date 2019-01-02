@@ -1,7 +1,9 @@
 package cobweb3d.plugins.personality;
 
 import cobweb3d.core.SimulationInternals;
+import cobweb3d.core.SimulationTimeSpace;
 import cobweb3d.core.agent.BaseAgent;
+import cobweb3d.core.entity.Cause;
 import cobweb3d.core.environment.Topology;
 import cobweb3d.core.location.Direction;
 import cobweb3d.core.location.LocationDirection;
@@ -11,7 +13,6 @@ import cobweb3d.plugins.broadcast.CheaterBroadcast;
 import cobweb3d.plugins.mutators.ContactMutator;
 import cobweb3d.plugins.mutators.MoveMutator;
 import cobweb3d.plugins.mutators.StatefulSpawnMutatorBase;
-import cobweb3d.plugins.pd.PDMutator;
 
 /*
  * So the mutator only controls the PD portion.
@@ -55,40 +56,63 @@ public class PersonalityMutator extends StatefulSpawnMutatorBase<PersonalityStat
         LocationDirection l1 = agent.getPosition();
         if (simulation.getTopology().getDistance(l1, l2) < 1.5) {
             agent.step();
-        } else  {
-            // If the direction of the agent is not facing the closest agent, make it turn
-            Direction agentToClosest = simulation.getTopology().getDirectionBetween4way(l1, l2);
-            Direction agentDirection = l1.direction;
-
-            // If the agent is already heading in the right direction, then keep on going
-            if (agentToClosest.equals(agent.getPosition().direction)) {
-                agent.step();
-            }
-
-            // Otherwise turn the agent towards the direction to the other agent
-            if ((agentToClosest.equals(Topology.NORTH) && agentDirection.equals(Topology.EAST)) ||
-                    (agentToClosest.equals(Topology.NORTH) && agentDirection.equals(Topology.SOUTH)) ||
-                    (agentToClosest.equals(Topology.EAST) && agentDirection.equals(Topology.SOUTH)) ||
-                    (agentToClosest.equals(Topology.SOUTH) && agentDirection.equals(Topology.WEST)) ||
-                    (agentToClosest.equals(Topology.SOUTH) && agentDirection.equals(Topology.NORTH)) ||
-                    (agentToClosest.equals(Topology.WEST) && agentDirection.equals(Topology.NORTH))) {
-                if (simulation.getRandom().nextFloat() < state.agentParams.extroversion * 1.25 ||
-                        simulation.getRandom().nextFloat() < state.agentParams.openness * 1.25) {
-                    agent.turnLeft();
+        } else {
+            Direction d = l1.direction;
+            int x = l2.x; int y = l2.y; int z = l2.z;
+            if (x > l1.x) {
+                if (d.equals(Direction.xPos)) {
+                    //System.out.println(1);
+                    agent.step();
                 } else {
-                    agent.turnRight();
+                    //System.out.println(2);
+                    agent.turnAbsoluteRight();
                 }
-            } else if ((agentToClosest.equals(Topology.NORTH) && agentToClosest.equals(Topology.WEST)) ||
-                    (agentToClosest.equals(Topology.EAST) && agentToClosest.equals(Topology.NORTH)) ||
-                    (agentToClosest.equals(Topology.EAST) && agentToClosest.equals(Topology.WEST)) ||
-                    (agentToClosest.equals(Topology.SOUTH) && agentToClosest.equals(Topology.EAST)) ||
-                    (agentToClosest.equals(Topology.WEST) && agentToClosest.equals(Topology.SOUTH)) ||
-                    (agentToClosest.equals(Topology.WEST) && agentToClosest.equals(Topology.EAST))) {
-                if (simulation.getRandom().nextFloat() < state.agentParams.extroversion * 1.25 ||
-                        simulation.getRandom().nextFloat() < state.agentParams.openness * 1.25) {
-                    agent.turnRight();
+            } else if (x < l1.x) {
+                if (d.equals(Direction.xNeg)) {
+                    //System.out.println(3);
+                    agent.step();
                 } else {
-                    agent.turnLeft();
+                    //System.out.println(4);
+                    agent.turnAbsoluteLeft();
+                }
+            } else { // now they are on the same x axis
+                if (y > l1.y) {
+                    if (d.equals(Direction.yNeg)) {
+                        //System.out.println(5);
+                        agent.step();
+                    } else {
+                        //System.out.println(6);
+                        agent.turnAbsoluteUp();
+                    }
+                } else if (y < l1.y) {
+                    if (d.equals(Direction.yPos)) {
+                        //System.out.println(7);
+                        agent.step();
+                    } else {
+                        //System.out.println(8);
+                        agent.turnAbsoluteDown();
+                    }
+                } else { // now they are on the same y axis and x axis
+                    if (z > l1.z) {
+                        if (d.equals(Direction.zPos)) {
+                            //System.out.println(9);
+                            agent.step();
+                        } else {
+                            //System.out.println(10);
+                            agent.turnAbsoluteIn();
+                        }
+                    } else if (z < l1.z) {
+                        if (d.equals(Direction.zNeg)) {
+                            //System.out.println(11);
+                            agent.step();
+                        } else {
+                            //System.out.println(12);
+                            agent.turnAbsoluteOut();
+                        }
+                    } else {
+                        System.out.println("Warning in personality mutator override move");
+                        // shouldn't happen
+                    }
                 }
             }
         }
@@ -100,12 +124,9 @@ public class PersonalityMutator extends StatefulSpawnMutatorBase<PersonalityStat
         this.sim = sim;
     }
 
-    public void setParams(PersonalityParams params) {
-        this.params = params;
-    }
 
     @Override
-    public PersonalityState stateForNewAgent(Agent agent) {
+    public PersonalityState stateForNewAgent(BaseAgent agent) {
         if (!params.personalitiesEnabled) {
             return null;
         }
@@ -113,7 +134,7 @@ public class PersonalityMutator extends StatefulSpawnMutatorBase<PersonalityStat
     }
 
     @Override
-    protected PersonalityState stateFromParent(Agent agent, PersonalityState parentState) {
+    protected PersonalityState stateFromParent(BaseAgent agent, PersonalityState parentState) {
         if (!params.personalitiesEnabled) {
             return null;
         }
@@ -189,23 +210,23 @@ public class PersonalityMutator extends StatefulSpawnMutatorBase<PersonalityStat
 
         if (!meState.pdCheater && !otherState.pdCheater) {
             /* Both cooperate */
-            me.changeEnergy(+params.reward, new PDMutator.PDRewardCause());
-            adjacentAgent.changeEnergy(+params.reward, new PDMutator.PDRewardCause());
+            me.changeEnergy(+params.reward, new PDRewardCause());
+            adjacentAgent.changeEnergy(+params.reward, new PDRewardCause());
 
         } else if (!meState.pdCheater && otherState.pdCheater) {
             /* Only other agent cheats */
-            me.changeEnergy(+params.sucker, new PDMutator.PDSuckerCause());
-            adjacentAgent.changeEnergy(+params.temptation, new PDMutator.PDTemptationCause());
+            me.changeEnergy(+params.sucker, new PDSuckerCause());
+            adjacentAgent.changeEnergy(+params.temptation, new PDTemptationCause());
 
         } else if (meState.pdCheater && !otherState.pdCheater) {
             /* Only this agent cheats */
-            me.changeEnergy(+params.temptation, new PDMutator.PDTemptationCause());
-            adjacentAgent.changeEnergy(+params.sucker, new PDMutator.PDSuckerCause());
+            me.changeEnergy(+params.temptation, new PDTemptationCause());
+            adjacentAgent.changeEnergy(+params.sucker, new PDSuckerCause());
 
         } else if (meState.pdCheater && otherState.pdCheater) {
             /* Both cheat */
-            me.changeEnergy(+params.punishment, new PDMutator.PDPunishmentCause());
-            adjacentAgent.changeEnergy(+params.punishment, new PDMutator.PDPunishmentCause());
+            me.changeEnergy(+params.punishment, new PDPunishmentCause());
+            adjacentAgent.changeEnergy(+params.punishment, new PDPunishmentCause());
         }
 
         if (otherState.pdCheater)
@@ -214,12 +235,49 @@ public class PersonalityMutator extends StatefulSpawnMutatorBase<PersonalityStat
 
     private static void iveBeenCheated(Agent me, BaseAgent cheater) {
         me.rememberBadAgent(cheater);
-        me.broadcast(new CheaterBroadcast(cheater, me), new PDMutator.BroadcastCheaterCause());
+        me.broadcast(new CheaterBroadcast(cheater, me), new BroadcastCheaterCause());
     }
 
 
     @Override
     protected boolean validState(PersonalityState state) {
         return state != null;
+    }
+
+    @Override
+    public void setParams(SimulationTimeSpace sim, PersonalityParams params, int agentTypes) {
+        this.sim = (SimulationInternals) sim;
+        this.params = params;
+    }
+
+    @Override
+    public boolean acceptsParam(Class<?> object) {
+        return object.isAssignableFrom(PersonalityParams.class);
+    }
+
+    public static class PDCause implements Cause {
+        @Override
+        public String getName() { return "PD"; }
+    }
+    public static class PDRewardCause extends PDCause {
+        @Override
+        public String getName() { return "PD Reward"; }
+    }
+    public static class PDTemptationCause extends PDCause {
+        @Override
+        public String getName() { return "PD Temptation"; }
+    }
+    public static class PDSuckerCause extends PDCause {
+        @Override
+        public String getName() { return "PD Sucker"; }
+    }
+    public static class PDPunishmentCause extends PDCause {
+        @Override
+        public String getName() { return "PD Punishment"; }
+    }
+
+    public static class BroadcastCheaterCause extends Agent.BroadcastCause {
+        @Override
+        public String getName() { return "Broadcast Cheating"; }
     }
 }

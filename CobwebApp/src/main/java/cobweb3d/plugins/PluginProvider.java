@@ -1,13 +1,16 @@
 package cobweb3d.plugins;
 
+import cobweb3d.core.SimulationInternals;
 import cobweb3d.core.Updatable;
 import cobweb3d.impl.Simulation;
 import cobweb3d.impl.SimulationConfig;
 import cobweb3d.impl.environment.Environment;
+import cobweb3d.plugins.broadcast.PacketConduit;
 import cobweb3d.plugins.mutators.AgentMutator;
 import cobweb3d.plugins.mutators.ConfiguratedMutator;
 import cobweb3d.plugins.mutators.DataLoggingMutator;
 import cobweb3d.plugins.mutators.EnvironmentMutator;
+import cobweb3d.plugins.personality.PersonalityMutator;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Field;
@@ -102,7 +105,12 @@ public class PluginProvider {
         Set<Class<? extends AgentMutator>> classes = getConfiguratedPlugins();
         for (Class<? extends AgentMutator> plugin : classes) {
             try {
-                AgentMutator mutator = plugin.newInstance();
+                AgentMutator mutator;
+                if (plugin.equals(PersonalityMutator.class)) {
+                    mutator = plugin.getDeclaredConstructor(SimulationInternals.class).newInstance(simulation);
+                } else {
+                    mutator = plugin.newInstance();
+                }
                 simulation.mutatorListener.addMutator(mutator);
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -118,6 +126,8 @@ public class PluginProvider {
                 ex.printStackTrace();
             }
         }
+
+        simulation.environment.addPlugin(new PacketConduit());
     }
 
     private static class PluginOrderComparator implements Comparator<Class<?>> {
